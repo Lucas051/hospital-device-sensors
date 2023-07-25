@@ -2,7 +2,7 @@
 
 namespace Obligatorio2023.Models
 {
-    public class Usuario
+    public abstract class Usuario
     {
         public int Id { get; set; }
         public string NombreUsuario { get; set; }
