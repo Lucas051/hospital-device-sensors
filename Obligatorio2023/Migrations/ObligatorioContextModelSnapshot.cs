@@ -126,6 +126,10 @@ namespace Obligatorio2023.Migrations
                 {
                     b.HasBaseType("Obligatorio2023.Models.Usuario");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int")
+                        .HasColumnName("Administrador_UsuarioId");
+
                     b.HasDiscriminator().HasValue("Administrador");
                 });
 
@@ -140,6 +144,10 @@ namespace Obligatorio2023.Migrations
                     b.Property<string>("Matricula")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int")
+                        .HasColumnName("Medico_UsuarioId");
 
                     b.HasDiscriminator().HasValue("Medico");
                 });
@@ -158,6 +166,9 @@ namespace Obligatorio2023.Migrations
                     b.Property<string>("TipoSangre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("Paciente");
                 });
