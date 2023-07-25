@@ -11,8 +11,8 @@ namespace Obligatorio2023.Models
         public DateTime FechaHoraUltimaModificacion { get; set; }
         public bool Activo { get; set; }
 
-        [ForeignKey("UsuarioId")]
-        public int UsuarioId { get; set; }
-        public Usuario UsuarioAsignado { get; set; }
+        [ForeignKey("PacienteId")]
+        public int PacienteId { get; set; }
+        public Paciente PacienteAsignado { get; set; }
     }
 }
