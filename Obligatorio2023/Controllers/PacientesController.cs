@@ -57,7 +57,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FechaNacimiento,TipoSangre,Observaciones,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] Paciente paciente)
+        public async Task<IActionResult> Create([Bind("Id,FechaNacimiento,TipoSangre,Observaciones,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] UPaciente paciente)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FechaNacimiento,TipoSangre,Observaciones,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] Paciente paciente)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FechaNacimiento,TipoSangre,Observaciones,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] UPaciente paciente)
         {
             if (id != paciente.Id)
             {

@@ -11,6 +11,10 @@ namespace Obligatorio2023.Models
         public string NombreApellido { get; set; }
         public string Telefono { get; set; }
         public string Direccion { get; set; }
+        public string Rol { get; set; }
+
+        /*ejemplo funcion abstracta*/
+        // public abstract void AltaDispositivo();
 
     }
 }

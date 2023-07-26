@@ -13,6 +13,5 @@ namespace Obligatorio2023.Models
 
         [ForeignKey("PacienteId")]
         public int PacienteId { get; set; }
-        public Paciente PacienteAsignado { get; set; }
     }
 }

@@ -57,7 +57,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Matricula,Especialidad,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] Medico medico)
+        public async Task<IActionResult> Create([Bind("Id,Matricula,Especialidad,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] UMedico medico)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Especialidad,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] Medico medico)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Especialidad,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] UMedico medico)
         {
             if (id != medico.Id)
             {
