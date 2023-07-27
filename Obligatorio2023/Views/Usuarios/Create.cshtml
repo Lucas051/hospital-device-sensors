@@ -13,9 +13,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+                <label asp-for="NombreUsuario" class="control-label"></label>
+                <input asp-for="NombreUsuario" class="form-control" />
+                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Contraseña" class="control-label"></label>
@@ -43,8 +43,9 @@
                 <span asp-validation-for="Direccion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RolId" class="control-label"></label>
-                <select asp-for="RolId" class ="form-control" asp-items="ViewBag.RolId"></select>
+                <label asp-for="Rol" class="control-label"></label>
+                <input asp-for="Rol" class="form-control" />
+                <span asp-validation-for="Rol" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

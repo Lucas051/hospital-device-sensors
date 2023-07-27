@@ -22,8 +22,9 @@ namespace Obligatorio2023.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-            var obligatorioContext = _context.Usuario.Include(u => u.Rol);
-            return View(await obligatorioContext.ToListAsync());
+              return _context.Usuario != null ? 
+                          View(await _context.Usuario.ToListAsync()) :
+                          Problem("Entity set 'ObligatorioContext.Usuario'  is null.");
         }
 
         // GET: Usuarios/Details/5
@@ -35,7 +36,6 @@ namespace Obligatorio2023.Controllers
             }
 
             var usuario = await _context.Usuario
-                .Include(u => u.Rol)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
             {
@@ -48,7 +48,6 @@ namespace Obligatorio2023.Controllers
         // GET: Usuarios/Create
         public IActionResult Create()
         {
-            ViewData["RolId"] = new SelectList(_context.Set<Roles>(), "Id", "Id");
             return View();
         }
 
@@ -57,7 +56,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion,Rol")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +64,6 @@ namespace Obligatorio2023.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Set<Roles>(), "Id", "Id", usuario.RolId);
             return View(usuario);
         }
 
@@ -82,7 +80,6 @@ namespace Obligatorio2023.Controllers
             {
                 return NotFound();
             }
-            ViewData["RolId"] = new SelectList(_context.Set<Roles>(), "Id", "Id", usuario.RolId);
             return View(usuario);
         }
 
@@ -91,7 +88,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion,Rol")] Usuario usuario)
         {
             if (id != usuario.Id)
             {
@@ -118,7 +115,6 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Set<Roles>(), "Id", "Id", usuario.RolId);
             return View(usuario);
         }
 
@@ -131,7 +127,6 @@ namespace Obligatorio2023.Controllers
             }
 
             var usuario = await _context.Usuario
-                .Include(u => u.Rol)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
             {

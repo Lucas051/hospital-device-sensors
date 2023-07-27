@@ -10,23 +10,24 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers
 {
-    public class AdministradorsController : Controller
+    public class UAdministradoresController : Controller
     {
         private readonly ObligatorioContext _context;
 
-        public AdministradorsController(ObligatorioContext context)
+        public UAdministradoresController(ObligatorioContext context)
         {
             _context = context;
         }
 
-        // GET: Administradors
+        // GET: UAdministradores
         public async Task<IActionResult> Index()
         {
-            var obligatorioContext = _context.Administrador.Include(a => a.Rol);
-            return View(await obligatorioContext.ToListAsync());
+              return _context.Administrador != null ? 
+                          View(await _context.Administrador.ToListAsync()) :
+                          Problem("Entity set 'ObligatorioContext.Administrador'  is null.");
         }
 
-        // GET: Administradors/Details/5
+        // GET: UAdministradores/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Administrador == null)
@@ -34,42 +35,39 @@ namespace Obligatorio2023.Controllers
                 return NotFound();
             }
 
-            var administrador = await _context.Administrador
-                .Include(a => a.Rol)
+            var uAdministrador = await _context.Administrador
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (administrador == null)
+            if (uAdministrador == null)
             {
                 return NotFound();
             }
 
-            return View(administrador);
+            return View(uAdministrador);
         }
 
-        // GET: Administradors/Create
+        // GET: UAdministradores/Create
         public IActionResult Create()
         {
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id");
             return View();
         }
 
-        // POST: Administradors/Create
+        // POST: UAdministradores/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] UAdministrador administrador)
+        public async Task<IActionResult> Create([Bind("Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion,Rol")] UAdministrador uAdministrador)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(administrador);
+                _context.Add(uAdministrador);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", administrador.RolId);
-            return View(administrador);
+            return View(uAdministrador);
         }
 
-        // GET: Administradors/Edit/5
+        // GET: UAdministradores/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Administrador == null)
@@ -77,23 +75,22 @@ namespace Obligatorio2023.Controllers
                 return NotFound();
             }
 
-            var administrador = await _context.Administrador.FindAsync(id);
-            if (administrador == null)
+            var uAdministrador = await _context.Administrador.FindAsync(id);
+            if (uAdministrador == null)
             {
                 return NotFound();
             }
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", administrador.RolId);
-            return View(administrador);
+            return View(uAdministrador);
         }
 
-        // POST: Administradors/Edit/5
+        // POST: UAdministradores/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] UAdministrador administrador)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion,Rol")] UAdministrador uAdministrador)
         {
-            if (id != administrador.Id)
+            if (id != uAdministrador.Id)
             {
                 return NotFound();
             }
@@ -102,12 +99,12 @@ namespace Obligatorio2023.Controllers
             {
                 try
                 {
-                    _context.Update(administrador);
+                    _context.Update(uAdministrador);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdministradorExists(administrador.Id))
+                    if (!UAdministradorExists(uAdministrador.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +115,10 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", administrador.RolId);
-            return View(administrador);
+            return View(uAdministrador);
         }
 
-        // GET: Administradors/Delete/5
+        // GET: UAdministradores/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Administrador == null)
@@ -130,18 +126,17 @@ namespace Obligatorio2023.Controllers
                 return NotFound();
             }
 
-            var administrador = await _context.Administrador
-                .Include(a => a.Rol)
+            var uAdministrador = await _context.Administrador
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (administrador == null)
+            if (uAdministrador == null)
             {
                 return NotFound();
             }
 
-            return View(administrador);
+            return View(uAdministrador);
         }
 
-        // POST: Administradors/Delete/5
+        // POST: UAdministradores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -150,17 +145,17 @@ namespace Obligatorio2023.Controllers
             {
                 return Problem("Entity set 'ObligatorioContext.Administrador'  is null.");
             }
-            var administrador = await _context.Administrador.FindAsync(id);
-            if (administrador != null)
+            var uAdministrador = await _context.Administrador.FindAsync(id);
+            if (uAdministrador != null)
             {
-                _context.Administrador.Remove(administrador);
+                _context.Administrador.Remove(uAdministrador);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AdministradorExists(int id)
+        private bool UAdministradorExists(int id)
         {
           return (_context.Administrador?.Any(e => e.Id == id)).GetValueOrDefault();
         }

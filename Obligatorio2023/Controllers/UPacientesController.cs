@@ -10,90 +10,87 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers
 {
-    public class MedicosController : Controller
+    public class UPacientesController : Controller
     {
         private readonly ObligatorioContext _context;
 
-        public MedicosController(ObligatorioContext context)
+        public UPacientesController(ObligatorioContext context)
         {
             _context = context;
         }
 
-        // GET: Medicos
+        // GET: UPacientes
         public async Task<IActionResult> Index()
         {
-            var obligatorioContext = _context.Medico.Include(m => m.Rol);
-            return View(await obligatorioContext.ToListAsync());
+              return _context.Paciente != null ? 
+                          View(await _context.Paciente.ToListAsync()) :
+                          Problem("Entity set 'ObligatorioContext.Paciente'  is null.");
         }
 
-        // GET: Medicos/Details/5
+        // GET: UPacientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Medico == null)
+            if (id == null || _context.Paciente == null)
             {
                 return NotFound();
             }
 
-            var medico = await _context.Medico
-                .Include(m => m.Rol)
+            var uPaciente = await _context.Paciente
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (medico == null)
+            if (uPaciente == null)
             {
                 return NotFound();
             }
 
-            return View(medico);
+            return View(uPaciente);
         }
 
-        // GET: Medicos/Create
+        // GET: UPacientes/Create
         public IActionResult Create()
         {
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id");
             return View();
         }
 
-        // POST: Medicos/Create
+        // POST: UPacientes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Matricula,Especialidad,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] UMedico medico)
+        public async Task<IActionResult> Create([Bind("FechaNac,TipoSangre,Observaciones,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion,Rol")] UPaciente uPaciente)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(medico);
+                _context.Add(uPaciente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", medico.RolId);
-            return View(medico);
+            return View(uPaciente);
         }
 
-        // GET: Medicos/Edit/5
+        // GET: UPacientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Medico == null)
+            if (id == null || _context.Paciente == null)
             {
                 return NotFound();
             }
 
-            var medico = await _context.Medico.FindAsync(id);
-            if (medico == null)
+            var uPaciente = await _context.Paciente.FindAsync(id);
+            if (uPaciente == null)
             {
                 return NotFound();
             }
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", medico.RolId);
-            return View(medico);
+            return View(uPaciente);
         }
 
-        // POST: Medicos/Edit/5
+        // POST: UPacientes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Especialidad,Nombre,Contraseña,Email,NombreApellido,Telefono,Direccion,RolId")] UMedico medico)
+        public async Task<IActionResult> Edit(int id, [Bind("FechaNac,TipoSangre,Observaciones,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion,Rol")] UPaciente uPaciente)
         {
-            if (id != medico.Id)
+            if (id != uPaciente.Id)
             {
                 return NotFound();
             }
@@ -102,12 +99,12 @@ namespace Obligatorio2023.Controllers
             {
                 try
                 {
-                    _context.Update(medico);
+                    _context.Update(uPaciente);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MedicoExists(medico.Id))
+                    if (!UPacienteExists(uPaciente.Id))
                     {
                         return NotFound();
                     }
@@ -118,51 +115,49 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", medico.RolId);
-            return View(medico);
+            return View(uPaciente);
         }
 
-        // GET: Medicos/Delete/5
+        // GET: UPacientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Medico == null)
+            if (id == null || _context.Paciente == null)
             {
                 return NotFound();
             }
 
-            var medico = await _context.Medico
-                .Include(m => m.Rol)
+            var uPaciente = await _context.Paciente
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (medico == null)
+            if (uPaciente == null)
             {
                 return NotFound();
             }
 
-            return View(medico);
+            return View(uPaciente);
         }
 
-        // POST: Medicos/Delete/5
+        // POST: UPacientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Medico == null)
+            if (_context.Paciente == null)
             {
-                return Problem("Entity set 'ObligatorioContext.Medico'  is null.");
+                return Problem("Entity set 'ObligatorioContext.Paciente'  is null.");
             }
-            var medico = await _context.Medico.FindAsync(id);
-            if (medico != null)
+            var uPaciente = await _context.Paciente.FindAsync(id);
+            if (uPaciente != null)
             {
-                _context.Medico.Remove(medico);
+                _context.Paciente.Remove(uPaciente);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MedicoExists(int id)
+        private bool UPacienteExists(int id)
         {
-          return (_context.Medico?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Paciente?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

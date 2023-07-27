@@ -1,4 +1,4 @@
-﻿@model Obligatorio2023.Models.UMedico
+﻿@model Obligatorio2023.Models.UAdministrador
 
 @{
     ViewData["Title"] = "Create";
@@ -6,26 +6,16 @@
 
 <h1>Create</h1>
 
-<h4>Medico</h4>
+<h4>UAdministrador</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Matricula" class="control-label"></label>
-                <input asp-for="Matricula" class="form-control" />
-                <span asp-validation-for="Matricula" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Especialidad" class="control-label"></label>
-                <input asp-for="Especialidad" class="form-control" />
-                <span asp-validation-for="Especialidad" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+                <label asp-for="NombreUsuario" class="control-label"></label>
+                <input asp-for="NombreUsuario" class="form-control" />
+                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Contraseña" class="control-label"></label>
@@ -53,8 +43,9 @@
                 <span asp-validation-for="Direccion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RolId" class="control-label"></label>
-                <select asp-for="RolId" class ="form-control" asp-items="ViewBag.RolId"></select>
+                <label asp-for="Rol" class="control-label"></label>
+                <input asp-for="Rol" class="form-control" />
+                <span asp-validation-for="Rol" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

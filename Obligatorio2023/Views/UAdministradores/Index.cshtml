@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Obligatorio2023.Models.UPaciente>
+﻿@model IEnumerable<Obligatorio2023.Models.UAdministrador>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,16 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FechaNacimiento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TipoSangre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Observaciones)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
+                @Html.DisplayNameFor(model => model.NombreUsuario)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Contraseña)
@@ -49,16 +40,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaNacimiento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoSangre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observaciones)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
+                @Html.DisplayFor(modelItem => item.NombreUsuario)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Contraseña)
@@ -76,7 +58,7 @@
                 @Html.DisplayFor(modelItem => item.Direccion)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rol.Id)
+                @Html.DisplayFor(modelItem => item.Rol)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
