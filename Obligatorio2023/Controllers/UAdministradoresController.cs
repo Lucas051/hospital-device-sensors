@@ -41,7 +41,7 @@ namespace Obligatorio2023.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(uAdministrador);
         }
 

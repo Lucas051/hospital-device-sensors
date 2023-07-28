@@ -34,7 +34,7 @@ namespace Obligatorio2023.Controllers
             {
                 return NotFound();
             }
-
+            /*.Include("Especialidad") En medico para explicitar que valores llegan para no tener null references*/
             var uMedico = await _context.Medico
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (uMedico == null)
