@@ -22,20 +22,20 @@ namespace Obligatorio2023.Controllers
         // GET: UPacientes
         public async Task<IActionResult> Index()
         {
-              return _context.Paciente != null ? 
-                          View(await _context.Paciente.ToListAsync()) :
-                          Problem("Entity set 'ObligatorioContext.Paciente'  is null.");
+              return _context.UPaciente != null ? 
+                          View(await _context.UPaciente.ToListAsync()) :
+                          Problem("Entity set 'ObligatorioContext.UPaciente'  is null.");
         }
 
         // GET: UPacientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Paciente == null)
+            if (id == null || _context.UPaciente == null)
             {
                 return NotFound();
             }
 
-            var uPaciente = await _context.Paciente
+            var uPaciente = await _context.UPaciente
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (uPaciente == null)
             {
@@ -56,7 +56,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FechaNac,TipoSangre,Observaciones,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion,Rol")] UPaciente uPaciente)
+        public async Task<IActionResult> Create([Bind("FechaNac,TipoSangre,Observaciones,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UPaciente uPaciente)
         {
             if (ModelState.IsValid)
             {
@@ -70,12 +70,12 @@ namespace Obligatorio2023.Controllers
         // GET: UPacientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Paciente == null)
+            if (id == null || _context.UPaciente == null)
             {
                 return NotFound();
             }
 
-            var uPaciente = await _context.Paciente.FindAsync(id);
+            var uPaciente = await _context.UPaciente.FindAsync(id);
             if (uPaciente == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FechaNac,TipoSangre,Observaciones,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion,Rol")] UPaciente uPaciente)
+        public async Task<IActionResult> Edit(int id, [Bind("FechaNac,TipoSangre,Observaciones,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UPaciente uPaciente)
         {
             if (id != uPaciente.Id)
             {
@@ -121,12 +121,12 @@ namespace Obligatorio2023.Controllers
         // GET: UPacientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Paciente == null)
+            if (id == null || _context.UPaciente == null)
             {
                 return NotFound();
             }
 
-            var uPaciente = await _context.Paciente
+            var uPaciente = await _context.UPaciente
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (uPaciente == null)
             {
@@ -141,14 +141,14 @@ namespace Obligatorio2023.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Paciente == null)
+            if (_context.UPaciente == null)
             {
-                return Problem("Entity set 'ObligatorioContext.Paciente'  is null.");
+                return Problem("Entity set 'ObligatorioContext.UPaciente'  is null.");
             }
-            var uPaciente = await _context.Paciente.FindAsync(id);
+            var uPaciente = await _context.UPaciente.FindAsync(id);
             if (uPaciente != null)
             {
-                _context.Paciente.Remove(uPaciente);
+                _context.UPaciente.Remove(uPaciente);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace Obligatorio2023.Controllers
 
         private bool UPacienteExists(int id)
         {
-          return (_context.Paciente?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.UPaciente?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

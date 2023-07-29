@@ -22,9 +22,8 @@ namespace Obligatorio2023.Controllers
         // GET: Dispositivos
         public async Task<IActionResult> Index()
         {
-              return _context.Dispositivo != null ? 
-                          View(await _context.Dispositivo.ToListAsync()) :
-                          Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
+            var obligatorioContext = _context.Dispositivo.Include(d => d.Paciente);
+            return View(await obligatorioContext.ToListAsync());
         }
 
         // GET: Dispositivos/Details/5
@@ -36,6 +35,7 @@ namespace Obligatorio2023.Controllers
             }
 
             var dispositivo = await _context.Dispositivo
+                .Include(d => d.Paciente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dispositivo == null)
             {
@@ -48,6 +48,7 @@ namespace Obligatorio2023.Controllers
         // GET: Dispositivos/Create
         public IActionResult Create()
         {
+            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Discriminator");
             return View();
         }
 
@@ -56,7 +57,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NombreUnico,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId,IdCreador")] Dispositivo dispositivo)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +65,7 @@ namespace Obligatorio2023.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Discriminator", dispositivo.PacienteId);
             return View(dispositivo);
         }
 
@@ -80,6 +82,7 @@ namespace Obligatorio2023.Controllers
             {
                 return NotFound();
             }
+            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Discriminator", dispositivo.PacienteId);
             return View(dispositivo);
         }
 
@@ -88,7 +91,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NombreUnico,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId,IdCreador")] Dispositivo dispositivo)
         {
             if (id != dispositivo.Id)
             {
@@ -115,6 +118,7 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Discriminator", dispositivo.PacienteId);
             return View(dispositivo);
         }
 
@@ -127,6 +131,7 @@ namespace Obligatorio2023.Controllers
             }
 
             var dispositivo = await _context.Dispositivo
+                .Include(d => d.Paciente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dispositivo == null)
             {

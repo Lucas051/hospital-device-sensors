@@ -22,20 +22,20 @@ namespace Obligatorio2023.Controllers
         // GET: UMedicos
         public async Task<IActionResult> Index()
         {
-              return _context.Medico != null ? 
-                          View(await _context.Medico.ToListAsync()) :
-                          Problem("Entity set 'ObligatorioContext.Medico'  is null.");
+              return _context.UMedico != null ? 
+                          View(await _context.UMedico.ToListAsync()) :
+                          Problem("Entity set 'ObligatorioContext.UMedico'  is null.");
         }
 
         // GET: UMedicos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Medico == null)
+            if (id == null || _context.UMedico == null)
             {
                 return NotFound();
             }
-            /*.Include("Especialidad") En medico para explicitar que valores llegan para no tener null references*/
-            var uMedico = await _context.Medico
+
+            var uMedico = await _context.UMedico
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (uMedico == null)
             {
@@ -56,7 +56,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Matricula,Especialidad,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion,Rol")] UMedico uMedico)
+        public async Task<IActionResult> Create([Bind("Matricula,Especialidad,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UMedico uMedico)
         {
             if (ModelState.IsValid)
             {
@@ -70,12 +70,12 @@ namespace Obligatorio2023.Controllers
         // GET: UMedicos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Medico == null)
+            if (id == null || _context.UMedico == null)
             {
                 return NotFound();
             }
 
-            var uMedico = await _context.Medico.FindAsync(id);
+            var uMedico = await _context.UMedico.FindAsync(id);
             if (uMedico == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Matricula,Especialidad,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion,Rol")] UMedico uMedico)
+        public async Task<IActionResult> Edit(int id, [Bind("Matricula,Especialidad,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UMedico uMedico)
         {
             if (id != uMedico.Id)
             {
@@ -121,12 +121,12 @@ namespace Obligatorio2023.Controllers
         // GET: UMedicos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Medico == null)
+            if (id == null || _context.UMedico == null)
             {
                 return NotFound();
             }
 
-            var uMedico = await _context.Medico
+            var uMedico = await _context.UMedico
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (uMedico == null)
             {
@@ -141,14 +141,14 @@ namespace Obligatorio2023.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Medico == null)
+            if (_context.UMedico == null)
             {
-                return Problem("Entity set 'ObligatorioContext.Medico'  is null.");
+                return Problem("Entity set 'ObligatorioContext.UMedico'  is null.");
             }
-            var uMedico = await _context.Medico.FindAsync(id);
+            var uMedico = await _context.UMedico.FindAsync(id);
             if (uMedico != null)
             {
-                _context.Medico.Remove(uMedico);
+                _context.UMedico.Remove(uMedico);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace Obligatorio2023.Controllers
 
         private bool UMedicoExists(int id)
         {
-          return (_context.Medico?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.UMedico?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
