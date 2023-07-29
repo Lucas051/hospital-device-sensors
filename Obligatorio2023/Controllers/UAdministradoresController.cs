@@ -10,87 +10,87 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers
 {
-    public class DispositivosController : Controller
+    public class UAdministradoresController : Controller
     {
         private readonly ObligatorioContext _context;
 
-        public DispositivosController(ObligatorioContext context)
+        public UAdministradoresController(ObligatorioContext context)
         {
             _context = context;
         }
 
-        // GET: Dispositivos
+        // GET: UAdministradores
         public async Task<IActionResult> Index()
         {
-              return _context.Dispositivo != null ? 
-                          View(await _context.Dispositivo.ToListAsync()) :
-                          Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
+              return _context.UAdministrador != null ? 
+                          View(await _context.UAdministrador.ToListAsync()) :
+                          Problem("Entity set 'ObligatorioContext.UAdministrador'  is null.");
         }
 
-        // GET: Dispositivos/Details/5
+        // GET: UAdministradores/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.UAdministrador == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo
+            var uAdministrador = await _context.UAdministrador
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dispositivo == null)
+            if (uAdministrador == null)
             {
                 return NotFound();
             }
 
-            return View(dispositivo);
+            return View(uAdministrador);
         }
 
-        // GET: Dispositivos/Create
+        // GET: UAdministradores/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Dispositivos/Create
+        // POST: UAdministradores/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,UPacienteId,UsuarioId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Create([Bind("Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UAdministrador uAdministrador)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dispositivo);
+                _context.Add(uAdministrador);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dispositivo);
+            return View(uAdministrador);
         }
 
-        // GET: Dispositivos/Edit/5
+        // GET: UAdministradores/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.UAdministrador == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo == null)
+            var uAdministrador = await _context.UAdministrador.FindAsync(id);
+            if (uAdministrador == null)
             {
                 return NotFound();
             }
-            return View(dispositivo);
+            return View(uAdministrador);
         }
 
-        // POST: Dispositivos/Edit/5
+        // POST: UAdministradores/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,UPacienteId,UsuarioId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UAdministrador uAdministrador)
         {
-            if (id != dispositivo.Id)
+            if (id != uAdministrador.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace Obligatorio2023.Controllers
             {
                 try
                 {
-                    _context.Update(dispositivo);
+                    _context.Update(uAdministrador);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DispositivoExists(dispositivo.Id))
+                    if (!UAdministradorExists(uAdministrador.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dispositivo);
+            return View(uAdministrador);
         }
 
-        // GET: Dispositivos/Delete/5
+        // GET: UAdministradores/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.UAdministrador == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo
+            var uAdministrador = await _context.UAdministrador
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dispositivo == null)
+            if (uAdministrador == null)
             {
                 return NotFound();
             }
 
-            return View(dispositivo);
+            return View(uAdministrador);
         }
 
-        // POST: Dispositivos/Delete/5
+        // POST: UAdministradores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Dispositivo == null)
+            if (_context.UAdministrador == null)
             {
-                return Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
+                return Problem("Entity set 'ObligatorioContext.UAdministrador'  is null.");
             }
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo != null)
+            var uAdministrador = await _context.UAdministrador.FindAsync(id);
+            if (uAdministrador != null)
             {
-                _context.Dispositivo.Remove(dispositivo);
+                _context.UAdministrador.Remove(uAdministrador);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DispositivoExists(int id)
+        private bool UAdministradorExists(int id)
         {
-          return (_context.Dispositivo?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.UAdministrador?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

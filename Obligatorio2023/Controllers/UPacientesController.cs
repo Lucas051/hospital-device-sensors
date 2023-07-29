@@ -10,87 +10,87 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers
 {
-    public class DispositivosController : Controller
+    public class UPacientesController : Controller
     {
         private readonly ObligatorioContext _context;
 
-        public DispositivosController(ObligatorioContext context)
+        public UPacientesController(ObligatorioContext context)
         {
             _context = context;
         }
 
-        // GET: Dispositivos
+        // GET: UPacientes
         public async Task<IActionResult> Index()
         {
-              return _context.Dispositivo != null ? 
-                          View(await _context.Dispositivo.ToListAsync()) :
-                          Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
+              return _context.UPaciente != null ? 
+                          View(await _context.UPaciente.ToListAsync()) :
+                          Problem("Entity set 'ObligatorioContext.UPaciente'  is null.");
         }
 
-        // GET: Dispositivos/Details/5
+        // GET: UPacientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.UPaciente == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo
+            var uPaciente = await _context.UPaciente
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dispositivo == null)
+            if (uPaciente == null)
             {
                 return NotFound();
             }
 
-            return View(dispositivo);
+            return View(uPaciente);
         }
 
-        // GET: Dispositivos/Create
+        // GET: UPacientes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Dispositivos/Create
+        // POST: UPacientes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,UPacienteId,UsuarioId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Create([Bind("FechaNac,TipoSangre,Observaciones,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UPaciente uPaciente)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dispositivo);
+                _context.Add(uPaciente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dispositivo);
+            return View(uPaciente);
         }
 
-        // GET: Dispositivos/Edit/5
+        // GET: UPacientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.UPaciente == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo == null)
+            var uPaciente = await _context.UPaciente.FindAsync(id);
+            if (uPaciente == null)
             {
                 return NotFound();
             }
-            return View(dispositivo);
+            return View(uPaciente);
         }
 
-        // POST: Dispositivos/Edit/5
+        // POST: UPacientes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,UPacienteId,UsuarioId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Edit(int id, [Bind("FechaNac,TipoSangre,Observaciones,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UPaciente uPaciente)
         {
-            if (id != dispositivo.Id)
+            if (id != uPaciente.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace Obligatorio2023.Controllers
             {
                 try
                 {
-                    _context.Update(dispositivo);
+                    _context.Update(uPaciente);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DispositivoExists(dispositivo.Id))
+                    if (!UPacienteExists(uPaciente.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dispositivo);
+            return View(uPaciente);
         }
 
-        // GET: Dispositivos/Delete/5
+        // GET: UPacientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.UPaciente == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo
+            var uPaciente = await _context.UPaciente
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dispositivo == null)
+            if (uPaciente == null)
             {
                 return NotFound();
             }
 
-            return View(dispositivo);
+            return View(uPaciente);
         }
 
-        // POST: Dispositivos/Delete/5
+        // POST: UPacientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Dispositivo == null)
+            if (_context.UPaciente == null)
             {
-                return Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
+                return Problem("Entity set 'ObligatorioContext.UPaciente'  is null.");
             }
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo != null)
+            var uPaciente = await _context.UPaciente.FindAsync(id);
+            if (uPaciente != null)
             {
-                _context.Dispositivo.Remove(dispositivo);
+                _context.UPaciente.Remove(uPaciente);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DispositivoExists(int id)
+        private bool UPacienteExists(int id)
         {
-          return (_context.Dispositivo?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.UPaciente?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

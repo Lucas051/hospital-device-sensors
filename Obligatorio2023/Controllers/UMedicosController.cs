@@ -10,87 +10,87 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers
 {
-    public class DispositivosController : Controller
+    public class UMedicosController : Controller
     {
         private readonly ObligatorioContext _context;
 
-        public DispositivosController(ObligatorioContext context)
+        public UMedicosController(ObligatorioContext context)
         {
             _context = context;
         }
 
-        // GET: Dispositivos
+        // GET: UMedicos
         public async Task<IActionResult> Index()
         {
-              return _context.Dispositivo != null ? 
-                          View(await _context.Dispositivo.ToListAsync()) :
-                          Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
+              return _context.UMedico != null ? 
+                          View(await _context.UMedico.ToListAsync()) :
+                          Problem("Entity set 'ObligatorioContext.UMedico'  is null.");
         }
 
-        // GET: Dispositivos/Details/5
+        // GET: UMedicos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.UMedico == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo
+            var uMedico = await _context.UMedico
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dispositivo == null)
+            if (uMedico == null)
             {
                 return NotFound();
             }
 
-            return View(dispositivo);
+            return View(uMedico);
         }
 
-        // GET: Dispositivos/Create
+        // GET: UMedicos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Dispositivos/Create
+        // POST: UMedicos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,UPacienteId,UsuarioId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Create([Bind("Matricula,Especialidad,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UMedico uMedico)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dispositivo);
+                _context.Add(uMedico);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dispositivo);
+            return View(uMedico);
         }
 
-        // GET: Dispositivos/Edit/5
+        // GET: UMedicos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.UMedico == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo == null)
+            var uMedico = await _context.UMedico.FindAsync(id);
+            if (uMedico == null)
             {
                 return NotFound();
             }
-            return View(dispositivo);
+            return View(uMedico);
         }
 
-        // POST: Dispositivos/Edit/5
+        // POST: UMedicos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,UPacienteId,UsuarioId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Edit(int id, [Bind("Matricula,Especialidad,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UMedico uMedico)
         {
-            if (id != dispositivo.Id)
+            if (id != uMedico.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace Obligatorio2023.Controllers
             {
                 try
                 {
-                    _context.Update(dispositivo);
+                    _context.Update(uMedico);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DispositivoExists(dispositivo.Id))
+                    if (!UMedicoExists(uMedico.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dispositivo);
+            return View(uMedico);
         }
 
-        // GET: Dispositivos/Delete/5
+        // GET: UMedicos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.UMedico == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo
+            var uMedico = await _context.UMedico
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dispositivo == null)
+            if (uMedico == null)
             {
                 return NotFound();
             }
 
-            return View(dispositivo);
+            return View(uMedico);
         }
 
-        // POST: Dispositivos/Delete/5
+        // POST: UMedicos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Dispositivo == null)
+            if (_context.UMedico == null)
             {
-                return Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
+                return Problem("Entity set 'ObligatorioContext.UMedico'  is null.");
             }
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo != null)
+            var uMedico = await _context.UMedico.FindAsync(id);
+            if (uMedico != null)
             {
-                _context.Dispositivo.Remove(dispositivo);
+                _context.UMedico.Remove(uMedico);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DispositivoExists(int id)
+        private bool UMedicoExists(int id)
         {
-          return (_context.Dispositivo?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.UMedico?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

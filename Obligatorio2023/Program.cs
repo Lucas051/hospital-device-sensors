@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Obligatorio2023.Data;
-var builder = WebApplication.CreateBuilder(args);
 
-//configurar servicio bd
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ObligatorioContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ObligatorioContext") ?? throw new InvalidOperationException("Connection string 'ObligatorioContext' not found.")));
 
+//configurar servicio bd
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
