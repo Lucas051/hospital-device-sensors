@@ -12,8 +12,8 @@ using Obligatorio2023.Data;
 namespace Obligatorio2023.Migrations
 {
     [DbContext(typeof(ObligatorioContext))]
-    [Migration("20230729145123_Inicial")]
-    partial class Inicial
+    [Migration("20230729183843_SegundaMigration")]
+    partial class SegundaMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

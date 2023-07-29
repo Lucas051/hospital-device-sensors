@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Obligatorio2023.Data;
 
 var builder = WebApplication.CreateBuilder(args);
