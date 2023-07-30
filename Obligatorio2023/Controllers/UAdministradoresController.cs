@@ -24,7 +24,7 @@ namespace Obligatorio2023.Controllers
         {
             if (_context.UAdministrador.Any())
             {
-                ViewBag.Rol = "Administrador";
+                //ViewBag.Rol = "Administrador";
                 return View(await _context.UAdministrador.ToListAsync());
             }
             
