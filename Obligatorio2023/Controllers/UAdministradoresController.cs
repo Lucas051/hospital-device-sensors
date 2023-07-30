@@ -22,9 +22,13 @@ namespace Obligatorio2023.Controllers
         // GET: UAdministradores
         public async Task<IActionResult> Index()
         {
-              return _context.UAdministrador != null ? 
-                          View(await _context.UAdministrador.ToListAsync()) :
-                          Problem("Entity set 'ObligatorioContext.UAdministrador'  is null.");
+            if (_context.UAdministrador.Any())
+            {
+                ViewBag.Rol = "Administrador";
+                return View(await _context.UAdministrador.ToListAsync());
+            }
+            
+            return Problem("Entity set 'ObligatorioContext.UAdministrador'  is null.");
         }
 
         // GET: UAdministradores/Details/5
