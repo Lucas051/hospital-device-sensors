@@ -9,6 +9,10 @@ namespace Obligatorio2023.Data
 {
     public class ObligatorioContext : DbContext
     {
+        public ObligatorioContext()
+        {
+        }
+
         public ObligatorioContext (DbContextOptions<ObligatorioContext> options)
             : base(options)
         {

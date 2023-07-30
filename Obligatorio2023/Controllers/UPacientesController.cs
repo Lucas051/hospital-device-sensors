@@ -22,9 +22,13 @@ namespace Obligatorio2023.Controllers
         // GET: UPacientes
         public async Task<IActionResult> Index()
         {
-              return _context.UPaciente != null ? 
-                          View(await _context.UPaciente.ToListAsync()) :
-                          Problem("Entity set 'ObligatorioContext.UPaciente'  is null.");
+            if (_context.UAdministrador.Any())
+            {
+                //ViewBag.Rol = "Paciente";
+                return View(await _context.UPaciente.ToListAsync());
+            }
+
+            return Problem("Entity set 'ObligatorioContext.UPaciente'  is null.");
         }
 
         // GET: UPacientes/Details/5
