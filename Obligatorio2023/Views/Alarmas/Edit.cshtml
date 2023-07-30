@@ -1,0 +1,49 @@
+﻿@model Obligatorio2023.Models.Alarma
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Alarma</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="DatoEvaluar" class="control-label"></label>
+                <input asp-for="DatoEvaluar" class="form-control" />
+                <span asp-validation-for="DatoEvaluar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValorLimite" class="control-label"></label>
+                <input asp-for="ValorLimite" class="form-control" />
+                <span asp-validation-for="ValorLimite" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comparador" class="control-label"></label>
+                <input asp-for="Comparador" class="form-control" />
+                <span asp-validation-for="Comparador" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DispositivoId" class="control-label"></label>
+                <select asp-for="DispositivoId" class="form-control" asp-items="ViewBag.DispositivoId"></select>
+                <span asp-validation-for="DispositivoId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

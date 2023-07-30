@@ -10,90 +10,90 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers
 {
-    public class DispositivosController : Controller
+    public class AlarmasController : Controller
     {
         private readonly ObligatorioContext _context;
 
-        public DispositivosController(ObligatorioContext context)
+        public AlarmasController(ObligatorioContext context)
         {
             _context = context;
         }
 
-        // GET: Dispositivos
+        // GET: Alarmas
         public async Task<IActionResult> Index()
         {
-            var obligatorioContext = _context.Dispositivo.Include(d => d.UPaciente);
+            var obligatorioContext = _context.Alarma.Include(a => a.Dispositivo);
             return View(await obligatorioContext.ToListAsync());
         }
 
-        // GET: Dispositivos/Details/5
+        // GET: Alarmas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.Alarma == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo
-                .Include(d => d.UPaciente)
+            var alarma = await _context.Alarma
+                .Include(a => a.Dispositivo)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dispositivo == null)
+            if (alarma == null)
             {
                 return NotFound();
             }
 
-            return View(dispositivo);
+            return View(alarma);
         }
 
-        // GET: Dispositivos/Create
+        // GET: Alarmas/Create
         public IActionResult Create()
         {
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "NombreApellido");
+            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id");
             return View();
         }
 
-        // POST: Dispositivos/Create
+        // POST: Alarmas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Create([Bind("Id,DatoEvaluar,ValorLimite,Comparador,DispositivoId")] Alarma alarma)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dispositivo);
+                _context.Add(alarma);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
-            return View(dispositivo);
+            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id", alarma.DispositivoId);
+            return View(alarma);
         }
 
-        // GET: Dispositivos/Edit/5
+        // GET: Alarmas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.Alarma == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo == null)
+            var alarma = await _context.Alarma.FindAsync(id);
+            if (alarma == null)
             {
                 return NotFound();
             }
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
-            return View(dispositivo);
+            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id", alarma.DispositivoId);
+            return View(alarma);
         }
 
-        // POST: Dispositivos/Edit/5
+        // POST: Alarmas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,DatoEvaluar,ValorLimite,Comparador,DispositivoId")] Alarma alarma)
         {
-            if (id != dispositivo.Id)
+            if (id != alarma.Id)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace Obligatorio2023.Controllers
             {
                 try
                 {
-                    _context.Update(dispositivo);
+                    _context.Update(alarma);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DispositivoExists(dispositivo.Id))
+                    if (!AlarmaExists(alarma.Id))
                     {
                         return NotFound();
                     }
@@ -118,51 +118,51 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
-            return View(dispositivo);
+            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id", alarma.DispositivoId);
+            return View(alarma);
         }
 
-        // GET: Dispositivos/Delete/5
+        // GET: Alarmas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.Alarma == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo
-                .Include(d => d.UPaciente)
+            var alarma = await _context.Alarma
+                .Include(a => a.Dispositivo)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dispositivo == null)
+            if (alarma == null)
             {
                 return NotFound();
             }
 
-            return View(dispositivo);
+            return View(alarma);
         }
 
-        // POST: Dispositivos/Delete/5
+        // POST: Alarmas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Dispositivo == null)
+            if (_context.Alarma == null)
             {
-                return Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
+                return Problem("Entity set 'ObligatorioContext.Alarma'  is null.");
             }
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo != null)
+            var alarma = await _context.Alarma.FindAsync(id);
+            if (alarma != null)
             {
-                _context.Dispositivo.Remove(dispositivo);
+                _context.Alarma.Remove(alarma);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DispositivoExists(int id)
+        private bool AlarmaExists(int id)
         {
-          return (_context.Dispositivo?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Alarma?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

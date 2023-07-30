@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Obligatorio2023.Models.Dispositivo>
+﻿@model IEnumerable<Obligatorio2023.Models.DatoReporte>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +13,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nombre)
+                @Html.DisplayNameFor(model => model.PresionArterial)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Detalle)
+                @Html.DisplayNameFor(model => model.Temperatura)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FechaHoraAlta)
+                @Html.DisplayNameFor(model => model.SaturacionOxigeno)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FechaHoraUltimaModificacion)
+                @Html.DisplayNameFor(model => model.Pulso)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Activo)
+                @Html.DisplayNameFor(model => model.FechaHoraUltRegistro)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UPaciente)
+                @Html.DisplayNameFor(model => model.Dispositivo)
             </th>
             <th></th>
         </tr>
@@ -37,22 +37,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
+                @Html.DisplayFor(modelItem => item.PresionArterial)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Detalle)
+                @Html.DisplayFor(modelItem => item.Temperatura)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaHoraAlta)
+                @Html.DisplayFor(modelItem => item.SaturacionOxigeno)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaHoraUltimaModificacion)
+                @Html.DisplayFor(modelItem => item.Pulso)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Activo)
+                @Html.DisplayFor(modelItem => item.FechaHoraUltRegistro)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UPaciente.Id)
+                @Html.DisplayFor(modelItem => item.Dispositivo.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

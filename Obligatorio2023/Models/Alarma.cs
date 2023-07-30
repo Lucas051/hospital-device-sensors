@@ -7,11 +7,11 @@ namespace Obligatorio2023.Models
         public int Id { get; set; }
         public string DatoEvaluar { get; set; }
         public float ValorLimite { get; set; }
-        public Comparador Comparador { get; set; }
-        public UPaciente Paciente { get; set; }
+        public string Comparador { get; set; }
+        public Dispositivo Dispositivo { get; set; }
 
-        [ForeignKey("PacienteId")]
-        public int PacienteId { get; set; }
+        [ForeignKey("Dispositivo")]
+        public int DispositivoId { get; set; }
 
     }
 }

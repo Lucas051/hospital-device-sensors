@@ -10,90 +10,90 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers
 {
-    public class DispositivosController : Controller
+    public class DatoReportesController : Controller
     {
         private readonly ObligatorioContext _context;
 
-        public DispositivosController(ObligatorioContext context)
+        public DatoReportesController(ObligatorioContext context)
         {
             _context = context;
         }
 
-        // GET: Dispositivos
+        // GET: DatoReportes
         public async Task<IActionResult> Index()
         {
-            var obligatorioContext = _context.Dispositivo.Include(d => d.UPaciente);
+            var obligatorioContext = _context.DatoReporte.Include(d => d.Dispositivo);
             return View(await obligatorioContext.ToListAsync());
         }
 
-        // GET: Dispositivos/Details/5
+        // GET: DatoReportes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.DatoReporte == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo
-                .Include(d => d.UPaciente)
+            var datoReporte = await _context.DatoReporte
+                .Include(d => d.Dispositivo)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dispositivo == null)
+            if (datoReporte == null)
             {
                 return NotFound();
             }
 
-            return View(dispositivo);
+            return View(datoReporte);
         }
 
-        // GET: Dispositivos/Create
+        // GET: DatoReportes/Create
         public IActionResult Create()
         {
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "NombreApellido");
+            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id");
             return View();
         }
 
-        // POST: Dispositivos/Create
+        // POST: DatoReportes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Create([Bind("Id,PresionArterial,Temperatura,SaturacionOxigeno,Pulso,FechaHoraUltRegistro,DispositivoId")] DatoReporte datoReporte)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dispositivo);
+                _context.Add(datoReporte);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
-            return View(dispositivo);
+            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id", datoReporte.DispositivoId);
+            return View(datoReporte);
         }
 
-        // GET: Dispositivos/Edit/5
+        // GET: DatoReportes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.DatoReporte == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo == null)
+            var datoReporte = await _context.DatoReporte.FindAsync(id);
+            if (datoReporte == null)
             {
                 return NotFound();
             }
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
-            return View(dispositivo);
+            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id", datoReporte.DispositivoId);
+            return View(datoReporte);
         }
 
-        // POST: Dispositivos/Edit/5
+        // POST: DatoReportes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PresionArterial,Temperatura,SaturacionOxigeno,Pulso,FechaHoraUltRegistro,DispositivoId")] DatoReporte datoReporte)
         {
-            if (id != dispositivo.Id)
+            if (id != datoReporte.Id)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace Obligatorio2023.Controllers
             {
                 try
                 {
-                    _context.Update(dispositivo);
+                    _context.Update(datoReporte);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DispositivoExists(dispositivo.Id))
+                    if (!DatoReporteExists(datoReporte.Id))
                     {
                         return NotFound();
                     }
@@ -118,51 +118,51 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
-            return View(dispositivo);
+            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id", datoReporte.DispositivoId);
+            return View(datoReporte);
         }
 
-        // GET: Dispositivos/Delete/5
+        // GET: DatoReportes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Dispositivo == null)
+            if (id == null || _context.DatoReporte == null)
             {
                 return NotFound();
             }
 
-            var dispositivo = await _context.Dispositivo
-                .Include(d => d.UPaciente)
+            var datoReporte = await _context.DatoReporte
+                .Include(d => d.Dispositivo)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dispositivo == null)
+            if (datoReporte == null)
             {
                 return NotFound();
             }
 
-            return View(dispositivo);
+            return View(datoReporte);
         }
 
-        // POST: Dispositivos/Delete/5
+        // POST: DatoReportes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Dispositivo == null)
+            if (_context.DatoReporte == null)
             {
-                return Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
+                return Problem("Entity set 'ObligatorioContext.DatoReporte'  is null.");
             }
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo != null)
+            var datoReporte = await _context.DatoReporte.FindAsync(id);
+            if (datoReporte != null)
             {
-                _context.Dispositivo.Remove(dispositivo);
+                _context.DatoReporte.Remove(datoReporte);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DispositivoExists(int id)
+        private bool DatoReporteExists(int id)
         {
-          return (_context.Dispositivo?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.DatoReporte?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

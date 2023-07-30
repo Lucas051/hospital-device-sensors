@@ -25,5 +25,9 @@ namespace Obligatorio2023.Data
         public DbSet<Obligatorio2023.Models.UMedico>? UMedico { get; set; }
 
         public DbSet<Obligatorio2023.Models.Dispositivo>? Dispositivo { get; set; }
+
+        public DbSet<Obligatorio2023.Models.Alarma>? Alarma { get; set; }
+
+        public DbSet<Obligatorio2023.Models.DatoReporte>? DatoReporte { get; set; }
     }
 }

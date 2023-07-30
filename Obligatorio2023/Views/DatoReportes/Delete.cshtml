@@ -1,4 +1,4 @@
-﻿@model Obligatorio2023.Models.Dispositivo
+﻿@model Obligatorio2023.Models.DatoReporte
 
 @{
     ViewData["Title"] = "Delete";
@@ -8,44 +8,44 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Dispositivo</h4>
+    <h4>DatoReporte</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
+            @Html.DisplayNameFor(model => model.PresionArterial)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
+            @Html.DisplayFor(model => model.PresionArterial)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Detalle)
+            @Html.DisplayNameFor(model => model.Temperatura)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Detalle)
+            @Html.DisplayFor(model => model.Temperatura)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaHoraAlta)
+            @Html.DisplayNameFor(model => model.SaturacionOxigeno)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaHoraAlta)
+            @Html.DisplayFor(model => model.SaturacionOxigeno)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaHoraUltimaModificacion)
+            @Html.DisplayNameFor(model => model.Pulso)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaHoraUltimaModificacion)
+            @Html.DisplayFor(model => model.Pulso)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Activo)
+            @Html.DisplayNameFor(model => model.FechaHoraUltRegistro)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Activo)
+            @Html.DisplayFor(model => model.FechaHoraUltRegistro)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UPaciente)
+            @Html.DisplayNameFor(model => model.Dispositivo)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UPaciente.Id)
+            @Html.DisplayFor(model => model.Dispositivo.Id)
         </dd>
     </dl>
     
