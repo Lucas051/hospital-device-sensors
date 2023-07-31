@@ -11,6 +11,7 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers
 {
+    [Authorize(Roles = "Administrador, Medico")]
     public class DispositivosController : Controller
     {
         private readonly ObligatorioContext _context;
