@@ -1,21 +1,29 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
     Layout = null;
     ViewBag.Title = "Login";
 }
 
-<h2>Login</h2>
+<h2 class="text-center mt-5">Iniciar Sesion</h2>
 @using (Html.BeginForm("Login", "Sessions", FormMethod.Post))
 {
-    <div>
-        <label for="NomUsu">Nombre de usuario:</label>
-        <input type="text" name="NomUsu" />
+    <div class="form-outline mb-4">
+        <label class="form-label" for="nomUsu">Usuario: </label>
+        <input type="text" name="nomUsu" class="form-control" />
+    </div>
+    <div class="form-outline mb-4">
+        <label class="form-label" for="contra">Contraseña: </label>
+        <input type="password" name="contra" class="form-control" />
+    </div>
+
+    <button type="submit" value="Login" class="btn btn-primary btn-block mb-4">Ingresar</button>
+
+   @* <div>
+        <label for="user">Nombre de usuario:</label>
+        <input type="text" name="nomUsu" />
     </div>
     <div>
-        <label for="contra">Contraseña:</label>
-        <input type="contra" name="contra" />
+        <label for="pass">Contraseña:</label>
+        <input type="password" name="contra" />
     </div>
-    <input type="submit" value="Login" />
+    <input type="submit" value="Login" />*@
 }

@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Obligatorio2023.Data;
 using Obligatorio2023.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Obligatorio2023.Controllers
 {
-    
+
 
     public class SessionsController : Controller
     {
@@ -23,26 +26,69 @@ namespace Obligatorio2023.Controllers
 
         // POST: Sessions/Login
         [HttpPost]
-        public ActionResult Login(string nomUsu, string contra)
+        public async Task<IActionResult> Login(string nomUsu, string contra)
         {
             //validando nombre de usuario y contrasenia con la base de datos
             //si es valido se redirect al controller correspondiente
+            //if (_context.UPaciente.SingleOrDefault(p => p.NombreUsuario == user && p.Contraseña == pass) != null)
+            //{
+            //    var claims = new List<Claim>
+            //    {
+            //        new Claim(ClaimTypes.Name, user),
+            //        new Claim(ClaimTypes.Role, "UPaciente")
+            //    };
+            //    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            //    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            //    RedirectToAction("Index", "Home");
+            //}
+
             if (_context.UPaciente.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra) != null)
             {
-               // ViewData["Rol"] = "Paciente";
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, nomUsu),
+                    new Claim(ClaimTypes.Role, "Paciente")
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 return RedirectToAction("Index", "UPacientes");
-            }else if (_context.UMedico.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra) != null)
+            }
+            else if (_context.UMedico.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra) != null)
             {
-                //ViewData["Rol"] = "Medico";
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, nomUsu),
+                    new Claim(ClaimTypes.Role, "Medico")
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 return RedirectToAction("Index", "UMedicos");
-            }else if (_context.UAdministrador.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra) != null)
+            }
+            else if (_context.UAdministrador.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra) != null)
             {
-               // ViewData["Rol"] = "Administrador";
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, nomUsu),
+                    new Claim(ClaimTypes.Role, "Administrador")
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 return RedirectToAction("Index", "UAdministradores");
             }
 
             // Si falla se muestra mensaje de error
             ModelState.AddModelError("", "Nombre o contraseña invalidos");
+            return View();
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Sessions");
+        }
+
+        public ActionResult AccesoDenegado()
+        {
             return View();
         }
     }
