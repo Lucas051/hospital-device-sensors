@@ -12,9 +12,6 @@
     <link rel="stylesheet" href="~/Obligatorio2023.styles.css" asp-append-version="true" />
 </head>
 <body>
-    @if (!(ViewContext.RouteData.Values["controller"].ToString().Equals("Sessions") &&
-    ViewContext.RouteData.Values["action"].ToString().Equals("Login")))
-    {
         <header>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
                 <div class="container-fluid">
@@ -60,7 +57,7 @@
                 </div>
             </nav>
         </header>
-    }
+    
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
