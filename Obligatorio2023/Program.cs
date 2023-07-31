@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using Obligatorio2023.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,14 @@ builder.Services.AddDbContext<ObligatorioContext>(options =>
 //configurar servicio bd
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+    option =>
+    {
+        option.LoginPath = "/Sessions/Login";
+        option.AccessDeniedPath = "/Sessions/AccesoDenegado";
+        option.ExpireTimeSpan= TimeSpan.FromMinutes(20);
+    });
 
 var app = builder.Build();
 
@@ -23,6 +32,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

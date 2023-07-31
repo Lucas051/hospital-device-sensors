@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿{
+    @using System.Security.Claims
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,7 +14,7 @@
 </head>
 <body>
     @if (!(ViewContext.RouteData.Values["controller"].ToString().Equals("Sessions") &&
-    ViewContext.RouteData.Values["action"].ToString().Equals("Login")))
+          ViewContext.RouteData.Values["action"].ToString().Equals("Login")))
     {
         <header>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -21,24 +25,25 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        @*@if (ViewBag.Rol != null)
-                        {*@
-                        
-                            <ul class="navbar-nav flex-grow-1">
 
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                                </li>
 
-                                @*@if (ViewBag.Rol.ToString() != "Paciente")
-                                {*@
-                                    <li class="nav-item">
+                        <ul class="navbar-nav flex-grow-1">
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+
+                            @if (User.IsInRole("Administrador") || User.IsInRole("Medico")){
+                            <li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Dispositivos" asp-action="Create">Alta de dispositivos</a>
                                     </li>
-                                @*}*@
+                              }
                             </ul>
-                        @*}*@
-
+                     
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Sessions" asp-action="LogOut">Cerrar Sesion</a>
+                        </li>
+                        <li>@User.Identity.Name</li>
                     </div>
                 </div>
             </nav>

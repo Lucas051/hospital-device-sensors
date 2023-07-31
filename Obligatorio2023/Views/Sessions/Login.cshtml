@@ -9,12 +9,12 @@
 @using (Html.BeginForm("Login", "Sessions", FormMethod.Post))
 {
     <div>
-        <label for="NomUsu">Nombre de usuario:</label>
-        <input type="text" name="NomUsu" />
+        <label for="user">Nombre de usuario:</label>
+        <input type="text" name="nomUsu" />
     </div>
     <div>
-        <label for="contra">Contraseña:</label>
-        <input type="contra" name="contra" />
+        <label for="pass">Contraseña:</label>
+        <input type="password" name="contra" />
     </div>
     <input type="submit" value="Login" />
 }
