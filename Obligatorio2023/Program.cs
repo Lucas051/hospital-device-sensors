@@ -13,7 +13,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
     option =>
     {
-        option.LoginPath = "/Home/Index";
+        option.LoginPath = "/Sessions/Login";
         option.AccessDeniedPath = "/Sessions/AccesoDenegado";
         option.ExpireTimeSpan= TimeSpan.FromMinutes(20);
     });
@@ -39,6 +39,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Sessions}/{action=Login}");
+    pattern: "{controller=Home}/{action=Index}");
 
 app.Run();

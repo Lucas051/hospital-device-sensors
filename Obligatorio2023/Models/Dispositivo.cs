@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Obligatorio2023.Models
 {
@@ -7,13 +8,19 @@ namespace Obligatorio2023.Models
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Detalle { get; set; }
+        [Display(Name = "Fecha y Hora de Alta")]
+
         public DateTime FechaHoraAlta { get; set; }
+        [Display(Name = "Última Modificación")]
+
         public DateTime FechaHoraUltimaModificacion { get; set; }
         public bool Activo { get; set; }
 
+        [Display(Name = "Nombre del Paciente")]
         public UPaciente? UPaciente { get; set; }
 
-        [ForeignKey("UPaciente")]
+        [Display(Name ="Paciente")]
+        [ForeignKey("UPaciente")] 
         public int PacienteId { get; set; }
 
     }
