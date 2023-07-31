@@ -28,20 +28,6 @@ namespace Obligatorio2023.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string nomUsu, string contra)
         {
-            //validando nombre de usuario y contrasenia con la base de datos
-            //si es valido se redirect al controller correspondiente
-            //if (_context.UPaciente.SingleOrDefault(p => p.NombreUsuario == user && p.Contraseña == pass) != null)
-            //{
-            //    var claims = new List<Claim>
-            //    {
-            //        new Claim(ClaimTypes.Name, user),
-            //        new Claim(ClaimTypes.Role, "UPaciente")
-            //    };
-            //    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            //    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            //    RedirectToAction("Index", "Home");
-            //}
-
             if (_context.UPaciente.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra) != null)
             {
                 var claims = new List<Claim>
