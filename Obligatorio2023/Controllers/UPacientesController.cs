@@ -32,7 +32,7 @@ namespace Obligatorio2023.Controllers
         }
 
         // GET: UPacientes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.UPaciente == null)
             {
@@ -72,7 +72,7 @@ namespace Obligatorio2023.Controllers
         }
 
         // GET: UPacientes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.UPaciente == null)
             {
@@ -92,7 +92,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FechaNac,TipoSangre,Observaciones,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UPaciente uPaciente)
+        public async Task<IActionResult> Edit(Guid id, [Bind("FechaNac,TipoSangre,Observaciones,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UPaciente uPaciente)
         {
             if (id != uPaciente.Id)
             {
@@ -123,7 +123,7 @@ namespace Obligatorio2023.Controllers
         }
 
         // GET: UPacientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.UPaciente == null)
             {
@@ -143,7 +143,7 @@ namespace Obligatorio2023.Controllers
         // POST: UPacientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.UPaciente == null)
             {
@@ -159,7 +159,7 @@ namespace Obligatorio2023.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UPacienteExists(int id)
+        private bool UPacienteExists(Guid id)
         {
           return (_context.UPaciente?.Any(e => e.Id == id)).GetValueOrDefault();
         }

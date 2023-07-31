@@ -12,8 +12,8 @@ using Obligatorio2023.Data;
 namespace Obligatorio2023.Migrations
 {
     [DbContext(typeof(ObligatorioContext))]
-    [Migration("20230729183843_SegundaMigration")]
-    partial class SegundaMigration
+    [Migration("20230731202400_guids_autogenerados")]
+    partial class guids_autogenerados
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,68 @@ namespace Obligatorio2023.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Obligatorio2023.Models.Alarma", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comparador")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DatoEvaluar")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DispositivoId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("ValorLimite")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DispositivoId");
+
+                    b.ToTable("Alarma");
+                });
+
+            modelBuilder.Entity("Obligatorio2023.Models.DatoReporte", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("DispositivoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaHoraUltRegistro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("PresionArterial")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Pulso")
+                        .HasColumnType("int");
+
+                    b.Property<float>("SaturacionOxigeno")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Temperatura")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DispositivoId");
+
+                    b.ToTable("DatoReporte");
+                });
 
             modelBuilder.Entity("Obligatorio2023.Models.Dispositivo", b =>
                 {
@@ -45,28 +107,28 @@ namespace Obligatorio2023.Migrations
                     b.Property<DateTime>("FechaHoraUltimaModificacion")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("MedicoId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UPacienteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PacienteId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PacienteId");
 
                     b.ToTable("Dispositivo");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.UAdministrador", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Contraseña")
                         .IsRequired()
@@ -99,11 +161,9 @@ namespace Obligatorio2023.Migrations
 
             modelBuilder.Entity("Obligatorio2023.Models.UMedico", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Contraseña")
                         .IsRequired()
@@ -144,11 +204,9 @@ namespace Obligatorio2023.Migrations
 
             modelBuilder.Entity("Obligatorio2023.Models.UPaciente", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Contraseña")
                         .IsRequired()
@@ -188,6 +246,39 @@ namespace Obligatorio2023.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UPaciente");
+                });
+
+            modelBuilder.Entity("Obligatorio2023.Models.Alarma", b =>
+                {
+                    b.HasOne("Obligatorio2023.Models.Dispositivo", "Dispositivo")
+                        .WithMany()
+                        .HasForeignKey("DispositivoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dispositivo");
+                });
+
+            modelBuilder.Entity("Obligatorio2023.Models.DatoReporte", b =>
+                {
+                    b.HasOne("Obligatorio2023.Models.Dispositivo", "Dispositivo")
+                        .WithMany()
+                        .HasForeignKey("DispositivoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dispositivo");
+                });
+
+            modelBuilder.Entity("Obligatorio2023.Models.Dispositivo", b =>
+                {
+                    b.HasOne("Obligatorio2023.Models.UPaciente", "UPaciente")
+                        .WithMany()
+                        .HasForeignKey("PacienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UPaciente");
                 });
 #pragma warning restore 612, 618
         }

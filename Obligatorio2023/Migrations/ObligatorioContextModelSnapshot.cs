@@ -105,12 +105,15 @@ namespace Obligatorio2023.Migrations
                     b.Property<DateTime>("FechaHoraUltimaModificacion")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("MedicoId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PacienteId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PacienteId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -121,11 +124,9 @@ namespace Obligatorio2023.Migrations
 
             modelBuilder.Entity("Obligatorio2023.Models.UAdministrador", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Contraseña")
                         .IsRequired()
@@ -158,11 +159,9 @@ namespace Obligatorio2023.Migrations
 
             modelBuilder.Entity("Obligatorio2023.Models.UMedico", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Contraseña")
                         .IsRequired()
@@ -203,11 +202,9 @@ namespace Obligatorio2023.Migrations
 
             modelBuilder.Entity("Obligatorio2023.Models.UPaciente", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Contraseña")
                         .IsRequired()

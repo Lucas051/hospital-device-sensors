@@ -32,7 +32,7 @@ namespace Obligatorio2023.Controllers
         }
 
         // GET: UAdministradores/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.UAdministrador == null)
             {
@@ -72,7 +72,7 @@ namespace Obligatorio2023.Controllers
         }
 
         // GET: UAdministradores/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.UAdministrador == null)
             {
@@ -92,7 +92,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UAdministrador uAdministrador)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UAdministrador uAdministrador)
         {
             if (id != uAdministrador.Id)
             {
@@ -123,7 +123,7 @@ namespace Obligatorio2023.Controllers
         }
 
         // GET: UAdministradores/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.UAdministrador == null)
             {
@@ -143,7 +143,7 @@ namespace Obligatorio2023.Controllers
         // POST: UAdministradores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.UAdministrador == null)
             {
@@ -159,7 +159,7 @@ namespace Obligatorio2023.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UAdministradorExists(int id)
+        private bool UAdministradorExists(Guid id)
         {
           return (_context.UAdministrador?.Any(e => e.Id == id)).GetValueOrDefault();
         }

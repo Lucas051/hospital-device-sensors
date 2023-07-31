@@ -28,23 +28,30 @@ namespace Obligatorio2023.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string nomUsu, string contra)
         {
-            if (_context.UPaciente.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra) != null)
+            UPaciente usuPac = _context.UPaciente.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra);
+            UMedico usuMed = _context.UMedico.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra);
+            UAdministrador usuAdm = _context.UAdministrador.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra);
+
+            if (usuPac != null)
             {
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, nomUsu),
-                    new Claim(ClaimTypes.Role, "Paciente")
+                    new Claim(ClaimTypes.Role, "Paciente"),
+                    new Claim(type: "Id", value: usuPac.Id.ToString()),
+
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 return RedirectToAction("Index", "UPacientes");
             }
-            else if (_context.UMedico.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra) != null)
+            else if (usuMed != null)
             {
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, nomUsu),
-                    new Claim(ClaimTypes.Role, "Medico")
+                    new Claim(ClaimTypes.Role, "Medico"),
+                    new Claim(type: "Id", value: usuMed.Id.ToString()),
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
@@ -55,7 +62,10 @@ namespace Obligatorio2023.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, nomUsu),
-                    new Claim(ClaimTypes.Role, "Administrador")
+                    new Claim(ClaimTypes.Role, "Administrador"),
+                    new Claim(type: "Id", value: usuAdm.Id.ToString()),
+
+
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
