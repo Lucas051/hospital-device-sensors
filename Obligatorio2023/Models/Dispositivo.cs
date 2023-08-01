@@ -17,7 +17,7 @@ namespace Obligatorio2023.Models
       
         public bool Activo { get; set; }
       
-        public UPaciente UPaciente { get; set; }
+        public UPaciente? UPaciente { get; set; }
 
         [ForeignKey("UPaciente")]
         public Guid PacienteId { get; set; }
