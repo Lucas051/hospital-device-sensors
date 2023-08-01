@@ -30,7 +30,7 @@ namespace Obligatorio2023.Controllers
         }
 
         // GET: UMedicos/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.UMedico == null)
             {
@@ -70,7 +70,7 @@ namespace Obligatorio2023.Controllers
         }
 
         // GET: UMedicos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.UMedico == null)
             {
@@ -90,7 +90,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Matricula,Especialidad,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UMedico uMedico)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Matricula,Especialidad,Id,NombreUsuario,Contraseña,Email,NombreApellido,Telefono,Direccion")] UMedico uMedico)
         {
             if (id != uMedico.Id)
             {
@@ -121,7 +121,7 @@ namespace Obligatorio2023.Controllers
         }
 
         // GET: UMedicos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.UMedico == null)
             {
@@ -141,7 +141,7 @@ namespace Obligatorio2023.Controllers
         // POST: UMedicos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.UMedico == null)
             {
@@ -157,7 +157,7 @@ namespace Obligatorio2023.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UMedicoExists(int id)
+        private bool UMedicoExists(Guid id)
         {
           return (_context.UMedico?.Any(e => e.Id == id)).GetValueOrDefault();
         }

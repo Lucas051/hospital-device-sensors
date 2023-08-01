@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Obligatorio2023.Data;
 using Obligatorio2023.Models;
 
@@ -21,11 +23,35 @@ namespace Obligatorio2023.Controllers
             _context = context;
         }
 
-        // GET: Dispositivos
+        // GET: Dispositivos/Index
         public async Task<IActionResult> Index()
         {
-            var obligatorioContext = _context.Dispositivo.Include(d => d.UPaciente);
-            return View(await obligatorioContext.ToListAsync());
+            if (!Guid.TryParse(User.Claims.First(x => x.Type.Equals("Id")).Value, out Guid usuarioId)) return BadRequest();
+
+            List<Dispositivo> dispositivos;
+
+            if (User.IsInRole("Administrador"))
+            {
+                dispositivos = await _context.Dispositivo.Include(d => d.UPaciente).ToListAsync();
+            }
+            else if (User.IsInRole("Medico"))
+            {
+                // Si el usuario actual es un médico, solo puede ver los dispositivos que él/ella creó.
+                dispositivos = await _context.Dispositivo
+                    .Where(d => d.MedicoId == usuarioId) // Filtrar por el usuario actual
+                    .Include(d => d.UPaciente)
+                    .ToListAsync();
+            }
+            else
+            {
+                // Si el usuario actual es un paciente, solo puede ver sus dispositivos.
+                dispositivos = await _context.Dispositivo
+                    .Where(d => d.PacienteId == usuarioId) // Filtrar por el usuario actual
+                    .Include(d => d.UPaciente)
+                    .ToListAsync();
+            }
+
+            return View(dispositivos);
         }
 
         // GET: Dispositivos/Details/5
@@ -62,14 +88,16 @@ namespace Obligatorio2023.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId")] Dispositivo dispositivo)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(dispositivo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "NombreApellido", dispositivo.PacienteId);
-            return View(dispositivo);
+            if (User.IsInRole("Medico"))
+                dispositivo.MedicoId = GetIdUsuarioLogueado();
+
+            _context.Add(dispositivo);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+            //ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
+            //return View(dispositivo);
+
         }
 
         // GET: Dispositivos/Edit/5
@@ -158,14 +186,22 @@ namespace Obligatorio2023.Controllers
             {
                 _context.Dispositivo.Remove(dispositivo);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DispositivoExists(int id)
         {
-          return (_context.Dispositivo?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Dispositivo?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private Guid GetIdUsuarioLogueado()
+        {
+            if (!Guid.TryParse(User.Claims.First(x => x.Type.Equals("Id")).Value, out Guid usuarioId))
+                throw new Exception("Esta Id no es un guid");
+
+            return usuarioId;
         }
     }
 }

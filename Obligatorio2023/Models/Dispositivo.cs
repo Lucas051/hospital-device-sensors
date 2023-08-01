@@ -12,16 +12,17 @@ namespace Obligatorio2023.Models
 
         public DateTime FechaHoraAlta { get; set; }
         [Display(Name = "Última Modificación")]
-
+      
         public DateTime FechaHoraUltimaModificacion { get; set; }
+      
         public bool Activo { get; set; }
+      
+        public UPaciente UPaciente { get; set; }
 
-        [Display(Name = "Nombre del Paciente")]
-        public UPaciente? UPaciente { get; set; }
+        [ForeignKey("UPaciente")]
+        public Guid PacienteId { get; set; }
 
-        [Display(Name ="Paciente")]
-        [ForeignKey("UPaciente")] 
-        public int PacienteId { get; set; }
-
+        [ForeignKey("UMedico")]
+        public Guid MedicoId { get; set; }
     }
 }
