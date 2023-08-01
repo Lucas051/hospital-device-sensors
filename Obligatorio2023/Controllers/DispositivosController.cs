@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Obligatorio2023.Data;
@@ -176,7 +177,9 @@ namespace Obligatorio2023.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Dispositivo == null)
+            try
+            {
+                if (_context.Dispositivo == null)
             {
                 return Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
             }
@@ -188,6 +191,22 @@ namespace Obligatorio2023.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                var sqlException = ex.InnerException as SqlException;
+                if (sqlException != null && sqlException.Number == 50000)
+                {
+                    TempData["ErrorMessage"] = "No se puede eliminar un dispositivo que está en uso.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Se produjo un error al eliminar el dispositivo.";
+                }
+                return RedirectToAction("Delete", "Dispositivos", new { id = id });
+            }
+
+
         }
 
         private bool DispositivoExists(int id)
