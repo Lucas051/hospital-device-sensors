@@ -95,8 +95,8 @@ namespace Obligatorio2023.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
 
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
-            return View(dispositivo);
+            //ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
+            //return View(dispositivo);
         }
 
         // GET: Dispositivos/Edit/5

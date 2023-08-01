@@ -57,7 +57,7 @@ namespace Obligatorio2023.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 return RedirectToAction("Index", "UMedicos");
             }
-            else if (_context.UAdministrador.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra) != null)
+            else if (usuAdm != null)
             {
                 var claims = new List<Claim>
                 {
