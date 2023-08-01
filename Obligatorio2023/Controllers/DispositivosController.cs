@@ -13,6 +13,7 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers
 {
+    [Authorize(Roles = "Administrador, Medico")]
     public class DispositivosController : Controller
     {
         private readonly ObligatorioContext _context;
@@ -87,7 +88,6 @@ namespace Obligatorio2023.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId")] Dispositivo dispositivo)
         {
-
             if (User.IsInRole("Medico"))
                 dispositivo.MedicoId = GetIdUsuarioLogueado();
 
@@ -97,6 +97,7 @@ namespace Obligatorio2023.Controllers
 
             //ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
             //return View(dispositivo);
+
         }
 
         // GET: Dispositivos/Edit/5

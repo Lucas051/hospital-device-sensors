@@ -3,17 +3,21 @@
     ViewBag.Title = "Login";
 }
 
-<h2 class="text-center mt-5">Iniciar Sesion</h2>
 @using (Html.BeginForm("Login", "Sessions", FormMethod.Post))
 {
-    <div class="form-outline mb-4">
-        <label class="form-label" for="nomUsu">Usuario: </label>
-        <input type="text" name="nomUsu" class="form-control" />
-    </div>
-    <div class="form-outline mb-4">
-        <label class="form-label" for="contra">Contraseña: </label>
-        <input type="password" name="contra" class="form-control" />
-    </div>
+    <div class="d-flex justify-content-center align-items-center flex-column">
 
-    <button type="submit" value="Login" class="btn btn-primary btn-block mb-4">Ingresar</button>
+        <h2 class="text-center mt-5">Iniciar Sesión</h2>
+
+        <div class="form-outline mb-4 col-lg-8 col-md-10 col-sm-12">
+            <label class="form-label" for="nomUsu">Usuario: </label>
+            <input type="text" name="nomUsu" class="form-control" />
+        </div>
+        <div class="form-outline mb-4 col-lg-8 col-md-10 col-sm-12">
+            <label class="form-label" for="contra">Contraseña: </label>
+            <input type="password" name="contra" class="form-control" />
+        </div>
+
+        <button type="submit" value="Login" class="btn btn-primary btn-block mb-4 col-lg-6 col-md-8 col-sm-10">Ingresar</button>
+    </div>
 }

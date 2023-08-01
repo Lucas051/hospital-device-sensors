@@ -43,7 +43,7 @@ namespace Obligatorio2023.Controllers
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                return RedirectToAction("Index", "UPacientes");
+                return RedirectToAction("Index", "Home");
             }
             else if (usuMed != null)
             {
@@ -55,7 +55,7 @@ namespace Obligatorio2023.Controllers
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                return RedirectToAction("Index", "UMedicos");
+                return RedirectToAction("Index", "Home");
             }
             else if (usuAdm != null)
             {
@@ -69,7 +69,7 @@ namespace Obligatorio2023.Controllers
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                return RedirectToAction("Index", "UAdministradores");
+                return RedirectToAction("Index", "Home");
             }
 
             // Si falla se muestra mensaje de error
