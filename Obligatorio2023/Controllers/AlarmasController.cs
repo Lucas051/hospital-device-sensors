@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,6 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers
 {
-    [Authorize]
     public class AlarmasController : Controller
     {
         private readonly ObligatorioContext _context;
@@ -59,7 +57,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DatoEvaluar,ValorLimite,Comparador,DispositivoId")] Alarma alarma)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,DatoEvaluar,ValorLimite,Comparador,DispositivoId")] Alarma alarma)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +91,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DatoEvaluar,ValorLimite,Comparador,DispositivoId")] Alarma alarma)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,DatoEvaluar,ValorLimite,Comparador,DispositivoId")] Alarma alarma)
         {
             if (id != alarma.Id)
             {

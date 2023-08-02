@@ -33,6 +33,10 @@
 
                         @if (User.IsInRole("Administrador") || User.IsInRole("Medico"))
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Alarmas" asp-action="Create">Alarmas</a>
+
+                            </li>
                            
                             <li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Dispositivos" asp-action="Create">Alta Dispositivos</a>
