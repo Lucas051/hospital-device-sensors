@@ -33,8 +33,10 @@
 
                         @if (User.IsInRole("Administrador") || User.IsInRole("Medico"))
                         {
+                           
                             <li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Dispositivos" asp-action="Create">Alta Dispositivos</a>
+                           
                             </li>
                         }
                         @if(loggeado){
@@ -52,8 +54,18 @@
                                     <li><a class="dropdown-item" asp-controller="UAdministradores" asp-action="Index">Administradores</a></li>
                                     <li><a class="dropdown-item" asp-controller="UMedicos" asp-action="Index">Medicos</a></li>
                                     <li><a class="dropdown-item" asp-controller="UPacientes" asp-action="Index">Pacientes</a></li>
+
                                 </ul>
                             </li>
+                     @*       <li class="nav-item dropdown">
+                                <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Base de Datos
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="Dispositivos" asp-action="DispositivoUsado">Dispositivos Usados</a></li>
+                                   
+                                </ul>
+                            </li>*@
                         }
 
                     </ul>
