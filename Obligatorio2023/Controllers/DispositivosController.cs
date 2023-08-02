@@ -63,8 +63,9 @@ namespace Obligatorio2023.Controllers
             }
 
             var dispositivo = await _context.Dispositivo
-                .Include(d => d.UPaciente)
-                .FirstOrDefaultAsync(m => m.Id == id);
+         .Include(d => d.UPaciente)
+         .FirstOrDefaultAsync(m => m.Id == id);
+
             if (dispositivo == null)
             {
                 return NotFound();
@@ -72,6 +73,51 @@ namespace Obligatorio2023.Controllers
 
             return View(dispositivo);
         }
+        //metodo para obtener el ultimo reporte para cada dispositivo
+        public IActionResult ObtenerUltimoDatoReporte(int id)
+        {
+            var ultimoDatoReporte = _context.DatoReporte
+                .Where(dr => dr.DispositivoId == id)
+                .OrderByDescending(dr => dr.FechaHoraUltRegistro)
+                .FirstOrDefault();
+
+            return PartialView("_UltimoDatoReporte", ultimoDatoReporte);
+        }
+
+
+        public async Task<IActionResult> DatosVitales(int? id)
+        {
+            if (id == null || _context.Dispositivo == null)
+            {
+                return NotFound();
+            }
+
+            var dispositivo = await _context.Dispositivo
+         .Include(d => d.UPaciente)
+         .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (dispositivo == null)
+            {
+                return NotFound();
+            }
+
+            return View(dispositivo);
+        }
+
+
+        //metodo para obtener todos los reportes del dispositivo seleccionado
+        [HttpGet]
+        public IActionResult ObtenerReportes(int id)
+        {
+            var reportes = _context.DatoReporte
+                .Where(dr => dr.DispositivoId == id)
+                .OrderByDescending(dr => dr.FechaHoraUltRegistro)
+                .ToList();
+
+            return PartialView("_DatosReporte", reportes);
+        }
+
+
 
         // GET: Dispositivos/Create
         [Authorize(Roles = "Administrador, Medico")]
@@ -229,5 +275,7 @@ namespace Obligatorio2023.Controllers
         }
 
       
+
+
     }
 }

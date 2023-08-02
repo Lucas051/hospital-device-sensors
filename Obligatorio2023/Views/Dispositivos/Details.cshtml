@@ -1,10 +1,10 @@
 ﻿@model Obligatorio2023.Models.Dispositivo
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles";
 }
 
-<h1>Details</h1>
+<h1>Detalles</h1>
 
 <div>
     <h4>Dispositivo</h4>
@@ -44,15 +44,37 @@
             @Html.DisplayNameFor(model => model.UPaciente)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UPaciente.Id)
+            @Html.DisplayFor(model => model.UPaciente.NombreApellido)
         </dd>
 
         <dt class="col-sm-2">
             Ultimo Reporte:
         </dt>
         <dd>
-            Presion muy alta jejej ayuden
+            <div id="ultimoDatoReporte"></div>
         </dd>
     </dl>
 </div>
+
+<script>
+    function cargarUltimoDatoReporte() {
+        $.ajax({
+            url: '@Url.Action("ObtenerUltimoDatoReporte", "Dispositivos")',
+            type: 'GET',
+            data: { id: @Model.Id },
+            dataType: 'html', 
+            success: function (data) {
+                // Actualiza el contenido del div con id "ultimoDatoReporte" con la vista parcial recibida
+                $("#ultimoDatoReporte").html(data);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Ejecuta la función cada 2 segundos
+    setInterval(cargarUltimoDatoReporte, 2000);
+</script>
+
 
