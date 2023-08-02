@@ -63,8 +63,9 @@ namespace Obligatorio2023.Controllers
             }
 
             var dispositivo = await _context.Dispositivo
-                .Include(d => d.UPaciente)
-                .FirstOrDefaultAsync(m => m.Id == id);
+         .Include(d => d.UPaciente)
+         .FirstOrDefaultAsync(m => m.Id == id);
+
             if (dispositivo == null)
             {
                 return NotFound();
@@ -72,6 +73,17 @@ namespace Obligatorio2023.Controllers
 
             return View(dispositivo);
         }
+        //metodo para obtener el ultimo reporte para cada dispositivo
+        public IActionResult ObtenerUltimoDatoReporte(int id)
+        {
+            var ultimoDatoReporte = _context.DatoReporte
+                .Where(dr => dr.DispositivoId == id)
+                .OrderByDescending(dr => dr.FechaHoraUltRegistro)
+                .FirstOrDefault();
+
+            return PartialView("_UltimoDatoReporte", ultimoDatoReporte);
+        }
+
 
         // GET: Dispositivos/Create
         [Authorize(Roles = "Administrador, Medico")]
