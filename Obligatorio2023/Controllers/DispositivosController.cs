@@ -86,11 +86,15 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Detalle, Activo,PacienteId")] Dispositivo dispositivo)
         {
             if (User.IsInRole("Medico"))
                 dispositivo.MedicoId = GetIdUsuarioLogueado();
+           
 
+            dispositivo.FechaHoraAlta = DateTime.Now;
+            dispositivo.FechaHoraUltimaModificacion= DateTime.Now;
+            dispositivo.Token = Guid.NewGuid();
             _context.Add(dispositivo);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -113,7 +117,7 @@ namespace Obligatorio2023.Controllers
             {
                 return NotFound();
             }
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
+            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "NombreApellido", dispositivo.PacienteId);
             return View(dispositivo);
         }
 
@@ -122,17 +126,19 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Detalle,FechaHoraAlta,FechaHoraUltimaModificacion,Activo,PacienteId")] Dispositivo dispositivo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Detalle, FechaHoraAlta, FechaHoraUltimaModificacion, Activo,PacienteId, Token")] Dispositivo dispositivo)
         {
             if (id != dispositivo.Id)
             {
                 return NotFound();
+               
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    dispositivo.FechaHoraUltimaModificacion = DateTime.Now;
                     _context.Update(dispositivo);
                     await _context.SaveChangesAsync();
                 }
@@ -149,7 +155,7 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
+            ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "NombreApellido", dispositivo.PacienteId);
             return View(dispositivo);
         }
 

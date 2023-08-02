@@ -28,7 +28,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.UPaciente)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Token)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -53,6 +55,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.UPaciente.NombreApellido)
                 </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.Token)
+                </td>
                 <td>
                     @if (User.IsInRole("Paciente"))
                     {
@@ -67,7 +72,7 @@
         
                     <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration:none; color: red">  Eliminar </a>
 
-                        <a asp-action="Index" asp-controller="DatoReportes" asp-route-id="@item.Id" style="text-decoration:none; color: green"> | Ver Datos</a>
+                        <a asp-action="Details" asp-controller="Dispositivos" asp-route-id="@item.Id" style="text-decoration:none; color: green"> | Ver Datos</a>
 
                     }
                           
