@@ -62,7 +62,7 @@
             url: '@Url.Action("ObtenerUltimoDatoReporte", "Dispositivos")',
             type: 'GET',
             data: { id: @Model.Id },
-            dataType: 'html', // Cambia el tipo de datos a "html" ya que queremos obtener una vista parcial HTML
+            dataType: 'html', 
             success: function (data) {
                 // Actualiza el contenido del div con id "ultimoDatoReporte" con la vista parcial recibida
                 $("#ultimoDatoReporte").html(data);

@@ -1,0 +1,51 @@
+﻿@model Obligatorio2023.Models.Dispositivo
+
+@{
+    ViewData["Title"] = "Datos Vitales";
+}
+
+<h1>Datos Vitales</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Nombre del Dispositivo
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+      
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UPaciente)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UPaciente.NombreApellido)
+        </dd>
+        <hr />
+       
+            <div id="reportesDispositivo"></div>
+       
+    </dl>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function cargarReportesDispositivo() {
+        $.ajax({
+            url: '@Url.Action("ObtenerReportes", "Dispositivos")',
+            type: 'GET',
+            data: { id: @Model.Id },
+            success: function (data) {
+                $("#reportesDispositivo").html(data);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Ejecutar la función cada 3 segundos
+    setInterval(cargarReportesDispositivo, 3000);
+</script>

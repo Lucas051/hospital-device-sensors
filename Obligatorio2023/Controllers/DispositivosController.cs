@@ -85,6 +85,40 @@ namespace Obligatorio2023.Controllers
         }
 
 
+        public async Task<IActionResult> DatosVitales(int? id)
+        {
+            if (id == null || _context.Dispositivo == null)
+            {
+                return NotFound();
+            }
+
+            var dispositivo = await _context.Dispositivo
+         .Include(d => d.UPaciente)
+         .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (dispositivo == null)
+            {
+                return NotFound();
+            }
+
+            return View(dispositivo);
+        }
+
+
+        //metodo para obtener todos los reportes del dispositivo seleccionado
+        [HttpGet]
+        public IActionResult ObtenerReportes(int id)
+        {
+            var reportes = _context.DatoReporte
+                .Where(dr => dr.DispositivoId == id)
+                .OrderByDescending(dr => dr.FechaHoraUltRegistro)
+                .ToList();
+
+            return PartialView("_DatosReporte", reportes);
+        }
+
+
+
         // GET: Dispositivos/Create
         [Authorize(Roles = "Administrador, Medico")]
         public IActionResult Create()
@@ -241,5 +275,7 @@ namespace Obligatorio2023.Controllers
         }
 
       
+
+
     }
 }
