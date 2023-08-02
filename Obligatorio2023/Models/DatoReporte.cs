@@ -11,7 +11,7 @@ namespace Obligatorio2023.Models
         public int Pulso { get; set; }
         public DateTime FechaHoraUltRegistro { get; set; }
 
-        public Dispositivo Dispositivo { get; set; }
+        public Dispositivo? Dispositivo { get; set; }
 
         [ForeignKey("Dispositivo")]
         public int DispositivoId { get; set; }
