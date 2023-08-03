@@ -12,8 +12,8 @@ using Obligatorio2023.Data;
 namespace Obligatorio2023.Migrations
 {
     [DbContext(typeof(ObligatorioContext))]
-    [Migration("20230802200718_Alarmas")]
-    partial class Alarmas
+    [Migration("20230803192515_AlarmaPaciente")]
+    partial class AlarmaPaciente
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,8 +39,8 @@ namespace Obligatorio2023.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DispositivoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IdPaciente")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -51,7 +51,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DispositivoId");
+                    b.HasIndex("IdPaciente");
 
                     b.ToTable("Alarma");
                 });
@@ -131,6 +131,46 @@ namespace Obligatorio2023.Migrations
                     b.HasIndex("PacienteId");
 
                     b.ToTable("Dispositivo");
+                });
+
+            modelBuilder.Entity("Obligatorio2023.Models.RegistroAlarma", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("DatoEvaluar")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaHoraGeneracion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdAlarma")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("IdPaciente")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PacienteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("ValorLimite")
+                        .HasColumnType("real");
+
+                    b.Property<string>("ValorRecibido")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdAlarma");
+
+                    b.HasIndex("PacienteId");
+
+                    b.ToTable("RegistroAlarma");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.UAdministrador", b =>
@@ -259,13 +299,13 @@ namespace Obligatorio2023.Migrations
 
             modelBuilder.Entity("Obligatorio2023.Models.Alarma", b =>
                 {
-                    b.HasOne("Obligatorio2023.Models.Dispositivo", "Dispositivo")
+                    b.HasOne("Obligatorio2023.Models.UPaciente", "Paciente")
                         .WithMany()
-                        .HasForeignKey("DispositivoId")
+                        .HasForeignKey("IdPaciente")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Dispositivo");
+                    b.Navigation("Paciente");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.DatoReporte", b =>
@@ -288,6 +328,23 @@ namespace Obligatorio2023.Migrations
                         .IsRequired();
 
                     b.Navigation("UPaciente");
+                });
+
+            modelBuilder.Entity("Obligatorio2023.Models.RegistroAlarma", b =>
+                {
+                    b.HasOne("Obligatorio2023.Models.Alarma", "Alarma")
+                        .WithMany()
+                        .HasForeignKey("IdAlarma")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Obligatorio2023.Models.UPaciente", "Paciente")
+                        .WithMany()
+                        .HasForeignKey("PacienteId");
+
+                    b.Navigation("Alarma");
+
+                    b.Navigation("Paciente");
                 });
 #pragma warning restore 612, 618
         }

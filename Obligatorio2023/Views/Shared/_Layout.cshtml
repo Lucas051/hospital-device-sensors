@@ -33,9 +33,17 @@
 
                         @if (User.IsInRole("Administrador") || User.IsInRole("Medico"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Alarmas" asp-action="Create">Alarmas</a>
+                      
+                            <li class="nav-item dropdown">
+                                <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Alarmas
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="Alarmas" asp-action="Create">Crear</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Alarmas" asp-action="Index">Listado</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Alarmas" asp-action="RegistroAlarma">Alarmas Activadas</a></li>
 
+                                </ul>
                             </li>
                            
                             <li class="nav-item">

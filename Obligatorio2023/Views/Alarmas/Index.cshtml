@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.Comparador)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Dispositivo)
+                @Html.DisplayNameFor(model => model.Paciente)
             </th>
             <th></th>
         </tr>
@@ -46,7 +46,7 @@
                 @Html.DisplayFor(modelItem => item.Comparador)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Dispositivo.Id)
+                @Html.DisplayFor(modelItem => item.Paciente.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -1,0 +1,61 @@
+﻿@model List<Obligatorio2023.Models.RegistroAlarma>
+
+<h1>Registros de Alarmas Activadas </h1>
+
+@*Preguntamos si el modelo no es nulo y si contiene por lo menos un elemento*@
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fecha y Hora de Generación</th>
+                <th>Dato Evaluado</th>
+                <th>Valor Limite</th>
+                <th>Valor Recibido</th>
+                <th>ID Paciente</th>
+                <th>Alarma</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var registro in Model)
+            {
+                <tr>
+                    <td>@registro.FechaHoraGeneracion</td>
+                    <td>@registro.DatoEvaluar</td>
+                    <td>@registro.ValorLimite</td>
+                    <td>@registro.ValorRecibido</td>
+                    <td>@registro.IdPaciente</td>
+                    <td>@(registro.Alarma?.Nombre ?? "N/A")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay registros de alarma.</p>
+}
+
+
+<script>
+    fetch('/api/DatoReportes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert(result.message);
+                // O mostrar la notificación en el cliente, dependiendo de la interfaz de usuario
+            } else {
+             null
+            }
+        })
+        .catch(error => {
+            console.error('Error al llamar a la API:', error);
+        });
+
+</script>

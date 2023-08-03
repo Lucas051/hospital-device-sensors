@@ -22,7 +22,7 @@ namespace Obligatorio2023.Controllers
         // GET: Alarmas
         public async Task<IActionResult> Index()
         {
-            var obligatorioContext = _context.Alarma.Include(a => a.Dispositivo);
+            var obligatorioContext = _context.Alarma.Include(a => a.Paciente);
             return View(await obligatorioContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Obligatorio2023.Controllers
             }
 
             var alarma = await _context.Alarma
-                .Include(a => a.Dispositivo)
+                .Include(a => a.Paciente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (alarma == null)
             {
@@ -48,7 +48,7 @@ namespace Obligatorio2023.Controllers
         // GET: Alarmas/Create
         public IActionResult Create()
         {
-            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id");
+            ViewData["IdPaciente"] = new SelectList(_context.UPaciente, "Id", "NombreApellido");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,DatoEvaluar,ValorLimite,Comparador,DispositivoId")] Alarma alarma)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,DatoEvaluar,ValorLimite,Comparador,IdPaciente")] Alarma alarma)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace Obligatorio2023.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id", alarma.DispositivoId);
+            ViewData["IdPaciente"] = new SelectList(_context.UPaciente, "Id", "NombreApellido", alarma.IdPaciente);
             return View(alarma);
         }
 
@@ -82,7 +82,7 @@ namespace Obligatorio2023.Controllers
             {
                 return NotFound();
             }
-            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id", alarma.DispositivoId);
+            ViewData["IdPaciente"] = new SelectList(_context.UPaciente, "Id", "Id", alarma.IdPaciente);
             return View(alarma);
         }
 
@@ -91,7 +91,7 @@ namespace Obligatorio2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,DatoEvaluar,ValorLimite,Comparador,DispositivoId")] Alarma alarma)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,DatoEvaluar,ValorLimite,Comparador,IdPaciente")] Alarma alarma)
         {
             if (id != alarma.Id)
             {
@@ -118,7 +118,7 @@ namespace Obligatorio2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DispositivoId"] = new SelectList(_context.Dispositivo, "Id", "Id", alarma.DispositivoId);
+            ViewData["IdPaciente"] = new SelectList(_context.UPaciente, "Id", "Id", alarma.IdPaciente);
             return View(alarma);
         }
 
@@ -131,7 +131,7 @@ namespace Obligatorio2023.Controllers
             }
 
             var alarma = await _context.Alarma
-                .Include(a => a.Dispositivo)
+                .Include(a => a.Paciente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (alarma == null)
             {
@@ -163,6 +163,18 @@ namespace Obligatorio2023.Controllers
         private bool AlarmaExists(int id)
         {
           return (_context.Alarma?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        //creamos este metodo para traer del contexto los registros de alarmas sin la necesidad de crear
+        //otro controlador de 0, ya que solo necesitamos mostrar las alarmas que "saltaron", no se deben manipular por el usuario
+        public IActionResult RegistroAlarma()
+        {
+            var registros = _context.RegistroAlarma
+                .Include(ra => ra.Paciente)
+                .Include(ra => ra.Alarma)
+                .ToList();
+
+            return View(registros);
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obligatorio2023.Data;
 
@@ -11,9 +12,10 @@ using Obligatorio2023.Data;
 namespace Obligatorio2023.Migrations
 {
     [DbContext(typeof(ObligatorioContext))]
-    partial class ObligatorioContextModelSnapshot : ModelSnapshot
+    [Migration("20230803151438_AlarmaRegistro")]
+    partial class AlarmaRegistro
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,10 +141,6 @@ namespace Obligatorio2023.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("DatoEvaluar")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("FechaHoraGeneracion")
                         .HasColumnType("datetime2");
 
@@ -152,21 +150,12 @@ namespace Obligatorio2023.Migrations
                     b.Property<Guid>("IdPaciente")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PacienteId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<float>("ValorLimite")
+                    b.Property<float>("ValorRecibido")
                         .HasColumnType("real");
-
-                    b.Property<string>("ValorRecibido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdAlarma");
-
-                    b.HasIndex("PacienteId");
 
                     b.ToTable("RegistroAlarma");
                 });
@@ -336,13 +325,7 @@ namespace Obligatorio2023.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Obligatorio2023.Models.UPaciente", "Paciente")
-                        .WithMany()
-                        .HasForeignKey("PacienteId");
-
                     b.Navigation("Alarma");
-
-                    b.Navigation("Paciente");
                 });
 #pragma warning restore 612, 618
         }
