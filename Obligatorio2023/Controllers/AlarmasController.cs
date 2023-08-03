@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Obligatorio2023.Data;
 using Obligatorio2023.Models;
@@ -176,5 +177,54 @@ namespace Obligatorio2023.Controllers
 
             return View(registros);
         }
+
+        public IActionResult UltimosRegistrosAlarma(int deviceId)
+        {
+            var lastAlarmRecords = new List<RegistroAlarma>();
+
+            // Establecer la cadena de conexión con la base de datos
+            string strcon = "Data Source=LAPTOP-MRHGENDT//SQLEXPRESS;Initial Catalog=Obligatorio_2023;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
+            // Crear la consulta SQL para obtener los últimos 10 registros de alarma para el dispositivo con el ID "deviceId"
+            string query = "SELECT TOP 10 * FROM RegistroAlarma WHERE IdDispositivo = @deviceId ORDER BY FechaHoraGeneracion ASC";
+
+            using (SqlConnection connection = new SqlConnection(strcon))
+            {
+                // Abrir la conexión con la base de datos
+                connection.Open();
+
+                // Crear el comando SQL
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    // Agregar el parámetro del dispositivo ID a la consulta
+                    command.Parameters.AddWithValue("@deviceId", deviceId);
+
+                    // Ejecutar la consulta y obtener los resultados
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            // Crear un objeto RegistroAlarma y asignar los valores del lector a las propiedades
+                            var registroAlarma = new RegistroAlarma
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                FechaHoraGeneracion = Convert.ToDateTime(reader["FechaHoraGeneracion"]),
+                                DatoEvaluar = reader["DatoEvaluar"].ToString(),
+                                ValorLimite = Convert.ToSingle(reader["ValorLimite"]),
+                                ValorRecibido = reader["ValorRecibido"].ToString(),
+                                IdPaciente = Guid.Parse(reader["IdPaciente"].ToString()),
+                                IdAlarma = Convert.ToInt32(reader["IdAlarma"])
+                            };
+
+                            // Agregar el objeto a la lista
+                            lastAlarmRecords.Add(registroAlarma);
+                        }
+                    }
+                }
+            }
+
+            return View("UltimosRegistrosAlarma", lastAlarmRecords);
+        }
+
     }
 }
