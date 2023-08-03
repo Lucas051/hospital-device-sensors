@@ -5,7 +5,8 @@ namespace Obligatorio2023.Models
     public class DatoReporte
     {
         public int Id { get; set; }
-        public float PresionArterial { get; set; }
+        public float PresionSistolica { get; set; }
+        public float PresionDistolica { get; set; }
         public float Temperatura { get; set; }
         public float SaturacionOxigeno { get; set; }
         public int Pulso { get; set; }

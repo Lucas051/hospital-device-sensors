@@ -1,0 +1,11 @@
+﻿@model Obligatorio2023.Models.DatoReporte
+
+@if (Model != null)
+{
+    <p>- Presión Arterial: @Model.PresionSistolica mmHg</p>
+    <p>- Presión Arterial: @Model.PresionDistolica mmHg</p>
+    <p>- Temperatura: @Model.Temperatura °C</p>
+    <p>- Saturación Oxígeno: @Model.SaturacionOxigeno %</p>
+    <p>- Pulso: @Model.Pulso bpm</p>
+    <p>- Fecha y Hora Ult. Registro: @Model.FechaHoraUltRegistro</p>
+}

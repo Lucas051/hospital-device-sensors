@@ -1,0 +1,34 @@
+﻿@model List<Obligatorio2023.Models.DatoReporte>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Presión Sistólica (mmHg)</th>
+                <th>Presión Diastólica (mmHg)</th>
+                <th>Temperatura (°C)</th>
+                <th>Saturación Oxígeno (%)</th>
+                <th>Pulso (bpm)</th>
+                <th>Fecha y Hora Registro</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reporte in Model)
+            {
+                <tr>
+                    <td>@reporte.PresionSistolica</td>
+                    <td>@reporte.PresionDistolica</td>
+                    <td>@reporte.Temperatura</td>
+                    <td>@reporte.SaturacionOxigeno</td>
+                    <td>@reporte.Pulso</td>
+                    <td>@reporte.FechaHoraUltRegistro</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontraron reportes para este dispositivo.</p>
+}
