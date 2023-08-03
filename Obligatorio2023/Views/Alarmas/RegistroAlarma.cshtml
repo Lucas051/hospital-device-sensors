@@ -12,8 +12,9 @@
                 <th>Dato Evaluado</th>
                 <th>Valor Limite</th>
                 <th>Valor Recibido</th>
-                <th>ID Paciente</th>
                 <th>Alarma</th>
+                <th>ID Dispositivo</th>
+                <th>ID Paciente</th>
             </tr>
         </thead>
         <tbody>
@@ -24,8 +25,9 @@
                     <td>@registro.DatoEvaluar</td>
                     <td>@registro.ValorLimite</td>
                     <td>@registro.ValorRecibido</td>
-                    <td>@registro.IdPaciente</td>
                     <td>@(registro.Alarma?.Nombre ?? "N/A")</td>
+                    <td>@registro.IdDispositivo</td>
+                    <td>@registro.IdPaciente</td>
                 </tr>
             }
         </tbody>
@@ -35,27 +37,3 @@ else
 {
     <p>No hay registros de alarma.</p>
 }
-
-
-<script>
-    fetch('/api/DatoReportes', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                alert(result.message);
-                // O mostrar la notificación en el cliente, dependiendo de la interfaz de usuario
-            } else {
-             null
-            }
-        })
-        .catch(error => {
-            console.error('Error al llamar a la API:', error);
-        });
-
-</script>

@@ -121,6 +121,7 @@ namespace Obligatorio2023.Controllers.API
                         ValorRecibido = datoReporte.GetType().GetProperty(alarma.DatoEvaluar).GetValue(datoReporte).ToString(),
                         ValorLimite = alarma.ValorLimite,
                         IdPaciente = alarma.IdPaciente,
+                        IdDispositivo = datoReporte.DispositivoId,
                         Alarma = alarma
                     };
 

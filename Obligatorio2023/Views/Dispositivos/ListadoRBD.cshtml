@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Obligatorio2023.Models.Dispositivo>
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "RBD";
+}
+
+<h1>Dispositivos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Detalle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaHoraAlta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaHoraUltimaModificacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Activo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UPaciente)
+            </th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Detalle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaHoraAlta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaHoraUltimaModificacion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Activo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UPaciente.NombreApellido)
+                </td>
+
+                <td>
+
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Medico"))
+                    {
+
+                        <a asp-action="RBD07" asp-route-id="@item.Id" style="text-decoration:none; color: blue"> RBD-07</a>
+                        <a asp-action="RBD08" asp-route-id="@item.Id" style="text-decoration:none; color: red">  RBD-08 </a>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
