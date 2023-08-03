@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +27,10 @@ namespace Obligatorio2023.Controllers.API
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DatoReporte>>> GetDatoReporte()
         {
-          if (_context.DatoReporte == null)
-          {
-              return NotFound();
-          }
+            if (_context.DatoReporte == null)
+            {
+                return NotFound();
+            }
             return await _context.DatoReporte.ToListAsync();
         }
 
@@ -36,16 +38,25 @@ namespace Obligatorio2023.Controllers.API
         [HttpGet("{id}")]
         public async Task<ActionResult<DatoReporte>> GetDatoReporte(int id)
         {
-          if (_context.DatoReporte == null)
-          {
-              return NotFound();
-          }
+            // crea e inicia el Stopwatch
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            if (_context.DatoReporte == null)
+            {
+                return NotFound();
+            }
             var datoReporte = await _context.DatoReporte.FindAsync(id);
-
             if (datoReporte == null)
             {
                 return NotFound();
             }
+            stopwatch.Stop();
+
+            //registrar la invocacion
+            string NombreEndpoint = "GetDatoReporte";
+            DateTime FechaInvocacion = DateTime.Now;
+            int Duracion = Convert.ToInt32(stopwatch.ElapsedMilliseconds);
+            _context.LogInvocacionEndpoint(NombreEndpoint, FechaInvocacion, Duracion);
 
             return datoReporte;
         }
@@ -86,14 +97,24 @@ namespace Obligatorio2023.Controllers.API
         [HttpPost]
         public async Task<ActionResult<DatoReporte>> PostDatoReporte(DatoReporte datoReporte)
         {
-          if (_context.DatoReporte == null)
-          {
-              return Problem("Entity set 'ObligatorioContext.DatoReporte'  is null.");
-          }
+            // crea e inicia el Stopwatch
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            if (_context.DatoReporte == null)
+            {
+                return Problem("Entity set 'ObligatorioContext.DatoReporte'  is null.");
+            }
             _context.DatoReporte.Add(datoReporte);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDatoReporte", new { id = datoReporte.Id }, datoReporte);
+            stopwatch.Stop();
+
+            //registrar la invocacion
+            string NombreEndpoint = "PostDatoReporte";
+            DateTime FechaInvocacion = DateTime.Now;
+            int Duracion = Convert.ToInt32(stopwatch.ElapsedMilliseconds);
+            _context.LogInvocacionEndpoint(NombreEndpoint, FechaInvocacion, Duracion);
+            return CreatedAtAction("PostDatoReporte", new { id = datoReporte.Id }, datoReporte);
         }
 
         // DELETE: api/DatoReportes/5
