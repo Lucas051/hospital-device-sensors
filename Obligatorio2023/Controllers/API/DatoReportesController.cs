@@ -38,7 +38,7 @@ namespace Obligatorio2023.Controllers.API
         [HttpGet("{id}")]
         public async Task<ActionResult<DatoReporte>> GetDatoReporte(int id)
         {
-            // Crea e inicia el Stopwatch
+            // crea e inicia el Stopwatch
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             if (_context.DatoReporte == null)
@@ -97,6 +97,9 @@ namespace Obligatorio2023.Controllers.API
         [HttpPost]
         public async Task<ActionResult<DatoReporte>> PostDatoReporte(DatoReporte datoReporte)
         {
+            // crea e inicia el Stopwatch
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             if (_context.DatoReporte == null)
             {
                 return Problem("Entity set 'ObligatorioContext.DatoReporte'  is null.");
@@ -104,7 +107,14 @@ namespace Obligatorio2023.Controllers.API
             _context.DatoReporte.Add(datoReporte);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDatoReporte", new { id = datoReporte.Id }, datoReporte);
+            stopwatch.Stop();
+
+            //registrar la invocacion
+            string NombreEndpoint = "PostDatoReporte";
+            DateTime FechaInvocacion = DateTime.Now;
+            int Duracion = Convert.ToInt32(stopwatch.ElapsedMilliseconds);
+            _context.LogInvocacionEndpoint(NombreEndpoint, FechaInvocacion, Duracion);
+            return CreatedAtAction("PostDatoReporte", new { id = datoReporte.Id }, datoReporte);
         }
 
         // DELETE: api/DatoReportes/5

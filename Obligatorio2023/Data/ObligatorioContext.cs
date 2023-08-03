@@ -30,10 +30,11 @@ namespace Obligatorio2023.Data
         public DbSet<Obligatorio2023.Models.Alarma>? Alarma { get; set; }
 
         public DbSet<Obligatorio2023.Models.DatoReporte>? DatoReporte { get; set; }
+        public DbSet<Obligatorio2023.Models.LogEndpoint>? LogEndpoint { get; set; }
+
 
         public void LogInvocacionEndpoint(string NombreEndpoint, DateTime FechaInvocacion, int Duracion)
         {
-            // Puedes usar ADO.NET aquí si es necesario, o simplemente usar Entity Framework
             var logEndpoint = new LogEndpoint
             {
                 NombreEndpoint = NombreEndpoint,

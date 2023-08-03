@@ -65,10 +65,7 @@ namespace Obligatorio2023.Migrations
                     b.Property<DateTime>("FechaHoraUltRegistro")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("PresionDistolica")
-                        .HasColumnType("real");
-
-                    b.Property<float>("PresionSistolica")
+                    b.Property<float>("PresionArterial")
                         .HasColumnType("real");
 
                     b.Property<int>("Pulso")
@@ -126,6 +123,29 @@ namespace Obligatorio2023.Migrations
                     b.HasIndex("PacienteId");
 
                     b.ToTable("Dispositivo", (string)null);
+                });
+
+            modelBuilder.Entity("Obligatorio2023.Models.LogEndpoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Duracion")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaInvocacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NombreEndpoint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogEndpoint", (string)null);
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.UAdministrador", b =>

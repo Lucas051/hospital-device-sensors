@@ -12,8 +12,8 @@ using Obligatorio2023.Data;
 namespace Obligatorio2023.Migrations
 {
     [DbContext(typeof(ObligatorioContext))]
-    [Migration("20230731142159_DispositivoFK")]
-    partial class DispositivoFK
+    [Migration("20230802201313_Log_invocacion")]
+    partial class Log_invocacion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -107,12 +107,18 @@ namespace Obligatorio2023.Migrations
                     b.Property<DateTime>("FechaHoraUltimaModificacion")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("MedicoId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PacienteId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PacienteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Token")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -121,13 +127,34 @@ namespace Obligatorio2023.Migrations
                     b.ToTable("Dispositivo");
                 });
 
-            modelBuilder.Entity("Obligatorio2023.Models.UAdministrador", b =>
+            modelBuilder.Entity("Obligatorio2023.Models.LogEndpoint", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Duracion")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaInvocacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NombreEndpoint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogEndpoint");
+                });
+
+            modelBuilder.Entity("Obligatorio2023.Models.UAdministrador", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Contraseña")
                         .IsRequired()
@@ -160,11 +187,9 @@ namespace Obligatorio2023.Migrations
 
             modelBuilder.Entity("Obligatorio2023.Models.UMedico", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Contraseña")
                         .IsRequired()
@@ -205,11 +230,9 @@ namespace Obligatorio2023.Migrations
 
             modelBuilder.Entity("Obligatorio2023.Models.UPaciente", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Contraseña")
                         .IsRequired()
