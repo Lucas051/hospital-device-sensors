@@ -179,36 +179,37 @@ namespace Obligatorio2023.Controllers
         }
         public static SqlConnection ObtenerConexion()
         {
+            //connection aparte para usarla varias veces
             string strcon = @"Data Source=LAPTOP-MRHGENDT\SQLEXPRESS;Initial Catalog = Obligatorio_2023 ;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             SqlConnection conn = new SqlConnection(strcon);
             return conn;
         }
-        public IActionResult UltimosRegistrosAlarma(int deviceId)
+        public IActionResult UltimosRegistrosAlarma(int Id)
         {
-            var lastAlarmRecords = new List<RegistroAlarma>();
+            //creamos esta var para asignar una list de registro alarmas
+            var ultimosRegistros = new List<RegistroAlarma>();
 
-            SqlConnection conn = ObtenerConexion(); 
-            
-            
-        
-                    // Abrir la conexión con la base de datos
-                     conn.Open();
-               
-            
+            try
+            {
+                using (SqlConnection conn = ObtenerConexion())
+                {
+                    // 1 - Abrir conn
+                    conn.Open();
+
                     string query = "SELECT TOP 10 * FROM RegistroAlarma WHERE IdDispositivo = @deviceId ORDER BY FechaHoraGeneracion ASC";
 
-                    // Crear el comando SQL
+                    // 2 - command
                     using (SqlCommand command = new SqlCommand(query, conn))
                     {
-                        // Agregar el parámetro del dispositivo ID a la consulta
-                        command.Parameters.AddWithValue("@deviceId", deviceId);
+                        // Agregar el parámetro de busqueda
+                        command.Parameters.AddWithValue("@deviceId", Id);
 
-                        // Ejecutar la consulta y obtener los resultados
+                       //usamos reader para select
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                // Crear un objeto RegistroAlarma y asignar los valores del lector a las propiedades
+                               
                                 var registroAlarma = new RegistroAlarma
                                 {
                                     Id = Convert.ToInt32(reader["Id"]),
@@ -220,15 +221,19 @@ namespace Obligatorio2023.Controllers
                                     IdAlarma = Convert.ToInt32(reader["IdAlarma"])
                                 };
 
-                                // Agregar el objeto a la lista
-                                lastAlarmRecords.Add(registroAlarma);
+                             
+                                ultimosRegistros.Add(registroAlarma);
                             }
                         }
                     }
-            
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-            return View("UltimosRegistrosAlarma", lastAlarmRecords);
+            return View("UltimosRegistrosAlarma", ultimosRegistros);
         }
-
     }
 }

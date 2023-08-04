@@ -70,7 +70,7 @@ namespace Obligatorio2023.Controllers
             {
                 return NotFound();
             }
-            //sdf;ljhldslkfjhdsfkljhdsfkljasdhfkjlsadfh
+      
             return View(dispositivo);
         }
         //metodo para obtener el ultimo reporte para cada dispositivo
