@@ -17,7 +17,7 @@ namespace Obligatorio2023.Controllers.API
     public class DatoReportesController : ControllerBase
     {
         private readonly ObligatorioContext _context;
-
+        //hola
         public DatoReportesController(ObligatorioContext context)
         {
             _context = context;
@@ -99,17 +99,17 @@ namespace Obligatorio2023.Controllers.API
         {
             // crea e inicia el Stopwatch
             Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();            
-            
+            stopwatch.Start();
+
             // Obtener el dispositivo asociado al reporte
             var dispositivo = await _context.Dispositivo
                 .Include(d => d.UPaciente) // Incluir la entidad paciente asociada al dispositivo
                 .FirstOrDefaultAsync(d => d.Id == datoReporte.DispositivoId);
-                            if (dispositivo == null)
+            if (dispositivo == null)
             {
                 return NotFound("Device not found.");
             }
-                        // Obtener todas las alarmas asociadas al paciente del dispositivo
+            // Obtener todas las alarmas asociadas al paciente del dispositivo
             var alarmas = await _context.Alarma
                 .Where(a => a.IdPaciente == dispositivo.PacienteId)
                 .ToListAsync();
@@ -143,11 +143,11 @@ namespace Obligatorio2023.Controllers.API
 
                 }
             }
-            
-            
-            
-            
-                        stopwatch.Stop();
+
+
+
+
+            stopwatch.Stop();
 
             //registrar la invocacion
             string NombreEndpoint = "PostDatoReporte";
@@ -161,12 +161,12 @@ namespace Obligatorio2023.Controllers.API
             }
             _context.DatoReporte.Add(datoReporte);
             await _context.SaveChangesAsync();
-              return CreatedAtAction("GetDatoReporte", new { id = datoReporte.Id }, datoReporte);
+            return CreatedAtAction("GetDatoReporte", new { id = datoReporte.Id }, datoReporte);
         }
 
         private bool VerificarAlarma(DatoReporte datoReporte, Alarma alarma)
         {
-       
+
 
             // Realizar la comparación con el valor límite de la alarma
             switch (alarma.DatoEvaluar)
