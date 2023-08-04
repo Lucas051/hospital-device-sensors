@@ -19,6 +19,8 @@ namespace Obligatorio2023.Data
         {
         }
 
+        public DbSet<Obligatorio2023.Models.RegistroAlarma> RegistroAlarma { get; set; } = default!;
+
         public DbSet<Obligatorio2023.Models.UAdministrador> UAdministrador { get; set; } = default!;
 
         public DbSet<Obligatorio2023.Models.UPaciente>? UPaciente { get; set; }

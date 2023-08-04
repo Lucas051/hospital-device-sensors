@@ -99,22 +99,112 @@ namespace Obligatorio2023.Controllers.API
         {
             // crea e inicia el Stopwatch
             Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            if (_context.DatoReporte == null)
+            stopwatch.Start();            
+            
+            // Obtener el dispositivo asociado al reporte
+            var dispositivo = await _context.Dispositivo
+                .Include(d => d.UPaciente) // Incluir la entidad paciente asociada al dispositivo
+                .FirstOrDefaultAsync(d => d.Id == datoReporte.DispositivoId);
+                            if (dispositivo == null)
             {
-                return Problem("Entity set 'ObligatorioContext.DatoReporte'  is null.");
+                return NotFound("Device not found.");
             }
-            _context.DatoReporte.Add(datoReporte);
-            await _context.SaveChangesAsync();
+                        // Obtener todas las alarmas asociadas al paciente del dispositivo
+            var alarmas = await _context.Alarma
+                .Where(a => a.IdPaciente == dispositivo.PacienteId)
+                .ToListAsync();
 
-            stopwatch.Stop();
+            // Verificar si los datos cumplen con alguna alarma y guardar los registros en RegistroAlarma
+            foreach (var alarma in alarmas)
+            {
+                if (VerificarAlarma(datoReporte, alarma))
+                {
+                    // Crear un nuevo registro en RegistroAlarma
+                    var registroAlarma = new RegistroAlarma
+                    {
+                        FechaHoraGeneracion = DateTime.Now,
+                        DatoEvaluar = alarma.DatoEvaluar,
+                        ValorRecibido = datoReporte.GetType().GetProperty(alarma.DatoEvaluar).GetValue(datoReporte).ToString(),
+                        ValorLimite = alarma.ValorLimite,
+                        IdPaciente = alarma.IdPaciente,
+                        IdDispositivo = datoReporte.DispositivoId,
+                        Alarma = alarma
+                    };
+
+                    _context.RegistroAlarma.Add(registroAlarma);
+                    await _context.SaveChangesAsync();
+
+                    // Retorna un mensaje de alerta
+                    return Ok(new
+                    {
+                        Success = true,
+                        Message = "¡Atencion! Una alarma se ha activado!"
+                    });
+
+                }
+            }
+            
+            
+            
+            
+                        stopwatch.Stop();
 
             //registrar la invocacion
             string NombreEndpoint = "PostDatoReporte";
             DateTime FechaInvocacion = DateTime.Now;
             int Duracion = Convert.ToInt32(stopwatch.ElapsedMilliseconds);
             _context.LogInvocacionEndpoint(NombreEndpoint, FechaInvocacion, Duracion);
-            return CreatedAtAction("PostDatoReporte", new { id = datoReporte.Id }, datoReporte);
+            //return CreatedAtAction("PostDatoReporte", new { id = datoReporte.Id }, datoReporte);
+            if (_context.DatoReporte == null)
+            {
+                return Problem("Entity set 'ObligatorioContext.DatoReporte'  is null.");
+            }
+            _context.DatoReporte.Add(datoReporte);
+            await _context.SaveChangesAsync();
+              return CreatedAtAction("GetDatoReporte", new { id = datoReporte.Id }, datoReporte);
+        }
+
+        private bool VerificarAlarma(DatoReporte datoReporte, Alarma alarma)
+        {
+       
+
+            // Realizar la comparación con el valor límite de la alarma
+            switch (alarma.DatoEvaluar)
+            {
+                case "PresionSistolica":
+                    return CompararValor(datoReporte.PresionSistolica, alarma.ValorLimite, alarma.Comparador);
+                case "PresionDistolica":
+                    return CompararValor(datoReporte.PresionDistolica, alarma.ValorLimite, alarma.Comparador);
+                case "Temperatura":
+                    return CompararValor(datoReporte.Temperatura, alarma.ValorLimite, alarma.Comparador);
+                case "SaturacionOxigeno":
+                    return CompararValor(datoReporte.SaturacionOxigeno, alarma.ValorLimite, alarma.Comparador);
+                case "Pulso":
+                    return CompararValor(datoReporte.Pulso, alarma.ValorLimite, alarma.Comparador);
+                default:
+                    // Si no se reconoce el dato a evaluar, se devuelve false (alarma no cumplida)
+                    return false;
+            }
+        }
+
+        private bool CompararValor(float valorReporte, float valorLimite, Comparador comparador)
+        {
+            switch (comparador)
+            {
+                case Comparador.Mayor:
+                    return valorReporte > valorLimite;
+                case Comparador.Menor:
+                    return valorReporte < valorLimite;
+                case Comparador.Igual:
+                    return valorReporte == valorLimite;
+                case Comparador.MayorIgual:
+                    return valorReporte >= valorLimite;
+                case Comparador.MenorIgual:
+                    return valorReporte <= valorLimite;
+                default:
+                    // Si no se reconoce el comparador, se devuelve false (alarma no cumplida)
+                    return false;
+            }
         }
 
         // DELETE: api/DatoReportes/5

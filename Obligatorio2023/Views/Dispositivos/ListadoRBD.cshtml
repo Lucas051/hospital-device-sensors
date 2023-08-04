@@ -2,7 +2,7 @@
 @using System.Security.Claims
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "RBD";
 }
 
 <h1>Dispositivos</h1>
@@ -31,7 +31,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.UPaciente)
             </th>
-        <th>Opciones</th>
+            <th>Opciones</th>
         </tr>
     </thead>
     <tbody>
@@ -59,18 +59,16 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.UPaciente.NombreApellido)
                 </td>
-             
+
                 <td>
-                    <a asp-action="Details" asp-controller="Dispositivos" asp-route-id="@item.Id" style="text-decoration:none; color: darkgreen"> Detalles </a> |
-                    <a asp-action="DatosVitales" asp-controller="Dispositivos" asp-route-id="@item.Id" style="text-decoration:none; color: darkgoldenrod"> Datos Vitales </a> |
 
                     @if (User.IsInRole("Administrador") || User.IsInRole("Medico"))
                     {
-                    
-                    <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration:none; color: blue">Editar  </a> 
-                    <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration:none; color: red">  Eliminar </a>
+
+                        <a asp-action="UltimosRegistrosAlarma" asp-route-id="@item.Id" style="text-decoration:none; color: blue"> RBD-07</a>
+                        <a asp-action="RBD08" asp-route-id="@item.Id" style="text-decoration:none; color: red">  RBD-08 </a>
                     }
-                          
+
                 </td>
             </tr>
         }

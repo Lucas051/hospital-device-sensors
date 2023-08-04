@@ -70,7 +70,7 @@ namespace Obligatorio2023.Controllers
             {
                 return NotFound();
             }
-
+            //sdf;ljhldslkfjhdsfkljhdsfkljasdhfkjlsadfh
             return View(dispositivo);
         }
         //metodo para obtener el ultimo reporte para cada dispositivo
@@ -136,10 +136,10 @@ namespace Obligatorio2023.Controllers
         {
             if (User.IsInRole("Medico"))
                 dispositivo.MedicoId = GetIdUsuarioLogueado();
-           
+
 
             dispositivo.FechaHoraAlta = DateTime.Now;
-            dispositivo.FechaHoraUltimaModificacion= DateTime.Now;
+            dispositivo.FechaHoraUltimaModificacion = DateTime.Now;
             dispositivo.Token = Guid.NewGuid();
             _context.Add(dispositivo);
             await _context.SaveChangesAsync();
@@ -177,7 +177,7 @@ namespace Obligatorio2023.Controllers
             if (id != dispositivo.Id)
             {
                 return NotFound();
-               
+
             }
 
             if (ModelState.IsValid)
@@ -232,17 +232,17 @@ namespace Obligatorio2023.Controllers
             try
             {
                 if (_context.Dispositivo == null)
-            {
-                return Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
-            }
-            var dispositivo = await _context.Dispositivo.FindAsync(id);
-            if (dispositivo != null)
-            {
-                _context.Dispositivo.Remove(dispositivo);
-            }
+                {
+                    return Problem("Entity set 'ObligatorioContext.Dispositivo'  is null.");
+                }
+                var dispositivo = await _context.Dispositivo.FindAsync(id);
+                if (dispositivo != null)
+                {
+                    _context.Dispositivo.Remove(dispositivo);
+                }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException ex)
             {
@@ -274,8 +274,47 @@ namespace Obligatorio2023.Controllers
             return usuarioId;
         }
 
-      
 
+        public async Task<IActionResult> ListadoRBD()
+        {
+            if (!Guid.TryParse(User.Claims.First(x => x.Type.Equals("Id")).Value, out Guid usuarioId)) return BadRequest();
 
+            List<Dispositivo> dispositivos;
+
+            if (User.IsInRole("Administrador"))
+            {
+                dispositivos = await _context.Dispositivo.Include(d => d.UPaciente).ToListAsync();
+            }
+            else if (User.IsInRole("Medico"))
+            {
+                // Si el usuario actual es un médico, solo puede ver los dispositivos que él/ella creó.
+                dispositivos = await _context.Dispositivo
+                    .Where(d => d.MedicoId == usuarioId) // Filtrar por el usuario actual
+                    .Include(d => d.UPaciente)
+                    .ToListAsync();
+            }
+            else
+            {
+                // Si el usuario actual es un paciente, solo puede ver sus dispositivos.
+                dispositivos = await _context.Dispositivo
+                    .Where(d => d.PacienteId == usuarioId) // Filtrar por el usuario actual
+                    .Include(d => d.UPaciente)
+                    .ToListAsync();
+            }
+
+            return View(dispositivos);
+        }
+
+        public IActionResult RBD07(){
+            return View();
+        }
+        public IActionResult RBD08()
+        {
+            return View();
+        }
+        public IActionResult RBD09()
+        {
+            return View();
+        }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obligatorio2023.Data;
 
@@ -11,9 +12,10 @@ using Obligatorio2023.Data;
 namespace Obligatorio2023.Migrations
 {
     [DbContext(typeof(ObligatorioContext))]
-    partial class ObligatorioContextModelSnapshot : ModelSnapshot
+    [Migration("20230803192515_AlarmaPaciente")]
+    partial class AlarmaPaciente
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +53,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasIndex("IdPaciente");
 
-                    b.ToTable("Alarma", (string)null);
+                    b.ToTable("Alarma");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.DatoReporte", b =>
@@ -68,7 +70,10 @@ namespace Obligatorio2023.Migrations
                     b.Property<DateTime>("FechaHoraUltRegistro")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("PresionArterial")
+                    b.Property<float>("PresionDistolica")
+                        .HasColumnType("real");
+
+                    b.Property<float>("PresionSistolica")
                         .HasColumnType("real");
 
                     b.Property<int>("Pulso")
@@ -84,7 +89,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasIndex("DispositivoId");
 
-                    b.ToTable("DatoReporte", (string)null);
+                    b.ToTable("DatoReporte");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.Dispositivo", b =>
@@ -125,30 +130,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasIndex("PacienteId");
 
-                    b.ToTable("Dispositivo", (string)null);
-                });
-
-            modelBuilder.Entity("Obligatorio2023.Models.LogEndpoint", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Duracion")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("FechaInvocacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NombreEndpoint")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LogEndpoint", (string)null);
+                    b.ToTable("Dispositivo");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.RegistroAlarma", b =>
@@ -167,9 +149,6 @@ namespace Obligatorio2023.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IdAlarma")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdDispositivo")
                         .HasColumnType("int");
 
                     b.Property<Guid>("IdPaciente")
@@ -226,7 +205,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UAdministrador", (string)null);
+                    b.ToTable("UAdministrador");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.UMedico", b =>
@@ -269,7 +248,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UMedico", (string)null);
+                    b.ToTable("UMedico");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.UPaciente", b =>
@@ -315,7 +294,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UPaciente", (string)null);
+                    b.ToTable("UPaciente");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.Alarma", b =>
