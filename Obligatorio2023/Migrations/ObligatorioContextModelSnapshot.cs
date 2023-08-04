@@ -51,7 +51,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasIndex("IdPaciente");
 
-                    b.ToTable("Alarma");
+                    b.ToTable("Alarma", (string)null);
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.DatoReporte", b =>
@@ -68,10 +68,7 @@ namespace Obligatorio2023.Migrations
                     b.Property<DateTime>("FechaHoraUltRegistro")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("PresionDistolica")
-                        .HasColumnType("real");
-
-                    b.Property<float>("PresionSistolica")
+                    b.Property<float>("PresionArterial")
                         .HasColumnType("real");
 
                     b.Property<int>("Pulso")
@@ -87,7 +84,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasIndex("DispositivoId");
 
-                    b.ToTable("DatoReporte");
+                    b.ToTable("DatoReporte", (string)null);
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.Dispositivo", b =>
@@ -128,7 +125,30 @@ namespace Obligatorio2023.Migrations
 
                     b.HasIndex("PacienteId");
 
-                    b.ToTable("Dispositivo");
+                    b.ToTable("Dispositivo", (string)null);
+                });
+
+            modelBuilder.Entity("Obligatorio2023.Models.LogEndpoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Duracion")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaInvocacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NombreEndpoint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogEndpoint", (string)null);
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.RegistroAlarma", b =>
@@ -206,7 +226,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UAdministrador");
+                    b.ToTable("UAdministrador", (string)null);
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.UMedico", b =>
@@ -249,7 +269,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UMedico");
+                    b.ToTable("UMedico", (string)null);
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.UPaciente", b =>
@@ -295,7 +315,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UPaciente");
+                    b.ToTable("UPaciente", (string)null);
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.Alarma", b =>

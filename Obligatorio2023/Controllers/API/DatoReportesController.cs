@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +27,10 @@ namespace Obligatorio2023.Controllers.API
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DatoReporte>>> GetDatoReporte()
         {
-          if (_context.DatoReporte == null)
-          {
-              return NotFound();
-          }
+            if (_context.DatoReporte == null)
+            {
+                return NotFound();
+            }
             return await _context.DatoReporte.ToListAsync();
         }
 
@@ -36,16 +38,25 @@ namespace Obligatorio2023.Controllers.API
         [HttpGet("{id}")]
         public async Task<ActionResult<DatoReporte>> GetDatoReporte(int id)
         {
-          if (_context.DatoReporte == null)
-          {
-              return NotFound();
-          }
+            // crea e inicia el Stopwatch
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            if (_context.DatoReporte == null)
+            {
+                return NotFound();
+            }
             var datoReporte = await _context.DatoReporte.FindAsync(id);
-
             if (datoReporte == null)
             {
                 return NotFound();
             }
+            stopwatch.Stop();
+
+            //registrar la invocacion
+            string NombreEndpoint = "GetDatoReporte";
+            DateTime FechaInvocacion = DateTime.Now;
+            int Duracion = Convert.ToInt32(stopwatch.ElapsedMilliseconds);
+            _context.LogInvocacionEndpoint(NombreEndpoint, FechaInvocacion, Duracion);
 
             return datoReporte;
         }
@@ -86,24 +97,19 @@ namespace Obligatorio2023.Controllers.API
         [HttpPost]
         public async Task<ActionResult<DatoReporte>> PostDatoReporte(DatoReporte datoReporte)
         {
-          if (_context.DatoReporte == null)
-          {
-              return Problem("Entity set 'ObligatorioContext.DatoReporte'  is null.");
-          }
-            _context.DatoReporte.Add(datoReporte);
-            await _context.SaveChangesAsync();
-
+            // crea e inicia el Stopwatch
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();            
+            
             // Obtener el dispositivo asociado al reporte
             var dispositivo = await _context.Dispositivo
                 .Include(d => d.UPaciente) // Incluir la entidad paciente asociada al dispositivo
                 .FirstOrDefaultAsync(d => d.Id == datoReporte.DispositivoId);
-
-            if (dispositivo == null)
+                            if (dispositivo == null)
             {
                 return NotFound("Device not found.");
             }
-
-            // Obtener todas las alarmas asociadas al paciente del dispositivo
+                        // Obtener todas las alarmas asociadas al paciente del dispositivo
             var alarmas = await _context.Alarma
                 .Where(a => a.IdPaciente == dispositivo.PacienteId)
                 .ToListAsync();
@@ -137,8 +143,25 @@ namespace Obligatorio2023.Controllers.API
 
                 }
             }
+            
+            
+            
+            
+                        stopwatch.Stop();
 
-            return CreatedAtAction("GetDatoReporte", new { id = datoReporte.Id }, datoReporte);
+            //registrar la invocacion
+            string NombreEndpoint = "PostDatoReporte";
+            DateTime FechaInvocacion = DateTime.Now;
+            int Duracion = Convert.ToInt32(stopwatch.ElapsedMilliseconds);
+            _context.LogInvocacionEndpoint(NombreEndpoint, FechaInvocacion, Duracion);
+            //return CreatedAtAction("PostDatoReporte", new { id = datoReporte.Id }, datoReporte);
+            if (_context.DatoReporte == null)
+            {
+                return Problem("Entity set 'ObligatorioContext.DatoReporte'  is null.");
+            }
+            _context.DatoReporte.Add(datoReporte);
+            await _context.SaveChangesAsync();
+              return CreatedAtAction("GetDatoReporte", new { id = datoReporte.Id }, datoReporte);
         }
 
         private bool VerificarAlarma(DatoReporte datoReporte, Alarma alarma)
