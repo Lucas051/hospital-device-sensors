@@ -1,0 +1,45 @@
+﻿@using System.Data
+@model DataTable
+
+<h1>Historico de Dispositivos</h1>
+
+@if (Model != null && Model.Rows.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>HistoricoId</th>
+                <th>DispositivoId</th>
+                <th>FechaModificacion</th>
+                <th>Accion</th>
+                <th>NombreDetalle</th>
+                <th>FechaHoraAlta</th>
+                <th>FechaHoraUltimaModificacion</th>
+                <th>Activo</th>
+                <th>IdPaciente</th>
+                <th>MedicoId</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (System.Data.DataRow row in Model.Rows)
+            {
+                <tr>
+                    <td>@row["HistoricoId"]</td>
+                    <td>@row["DispositivoId"]</td>
+                    <td>@row["FechaModificacion"]</td>
+                    <td>@row["Accion"]</td>
+                    <td>@row["NombreDetalle"]</td>
+                    <td>@row["FechaHoraAlta"]</td>
+                    <td>@row["FechaHoraUltimaModificacion"]</td>
+                    <td>@row["Activo"]</td>
+                    <td>@row["IdPaciente"]</td>
+                    <td>@row["MedicoId"]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay registros en el historico de dispositivos.</p>
+}
