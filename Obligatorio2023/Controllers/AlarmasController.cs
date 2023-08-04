@@ -179,7 +179,7 @@ namespace Obligatorio2023.Controllers
         }
         public static SqlConnection ObtenerConexion()
         {
-            string strcon = @"Server=LAPTOP-MRHGENDT//SQLEXPRESS;Initial Catalog=Obligatorio_2023;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            string strcon = @"Data Source=LAPTOP-MRHGENDT\SQLEXPRESS;Initial Catalog = Obligatorio_2023 ;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             SqlConnection conn = new SqlConnection(strcon);
             return conn;
         }
@@ -187,17 +187,15 @@ namespace Obligatorio2023.Controllers
         {
             var lastAlarmRecords = new List<RegistroAlarma>();
 
-            //1- CONEXION: SQLCONNECTION
-            SqlConnection conn = null;
-            try
-            {
-                // Crear la consulta SQL para obtener los últimos 10 registros de alarma para el dispositivo con el ID "deviceId"
-                string query = "SELECT TOP 10 * FROM RegistroAlarma WHERE IdDispositivo = @deviceId ORDER BY FechaHoraGeneracion ASC";
-
-                using (conn = ObtenerConexion())
-                {
+            SqlConnection conn = ObtenerConexion(); 
+            
+            
+        
                     // Abrir la conexión con la base de datos
-                    conn.Open();
+                     conn.Open();
+               
+            
+                    string query = "SELECT TOP 10 * FROM RegistroAlarma WHERE IdDispositivo = @deviceId ORDER BY FechaHoraGeneracion ASC";
 
                     // Crear el comando SQL
                     using (SqlCommand command = new SqlCommand(query, conn))
@@ -227,19 +225,8 @@ namespace Obligatorio2023.Controllers
                             }
                         }
                     }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
+            
 
-                //CERRAR CONEXION
-                conn.Close();
-
-            }
             return View("UltimosRegistrosAlarma", lastAlarmRecords);
         }
 
