@@ -177,52 +177,69 @@ namespace Obligatorio2023.Controllers
 
             return View(registros);
         }
-
+        public static SqlConnection ObtenerConexion()
+        {
+            string strcon = @"Server=LAPTOP-MRHGENDT//SQLEXPRESS;Initial Catalog=Obligatorio_2023;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            SqlConnection conn = new SqlConnection(strcon);
+            return conn;
+        }
         public IActionResult UltimosRegistrosAlarma(int deviceId)
         {
             var lastAlarmRecords = new List<RegistroAlarma>();
 
-            // Establecer la cadena de conexión con la base de datos
-            string strcon = "Data Source=LAPTOP-MRHGENDT//SQLEXPRESS;Initial Catalog=Obligatorio_2023;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-            // Crear la consulta SQL para obtener los últimos 10 registros de alarma para el dispositivo con el ID "deviceId"
-            string query = "SELECT TOP 10 * FROM RegistroAlarma WHERE IdDispositivo = @deviceId ORDER BY FechaHoraGeneracion ASC";
-
-            using (SqlConnection connection = new SqlConnection(strcon))
+            //1- CONEXION: SQLCONNECTION
+            SqlConnection conn = null;
+            try
             {
-                // Abrir la conexión con la base de datos
-                connection.Open();
+                // Crear la consulta SQL para obtener los últimos 10 registros de alarma para el dispositivo con el ID "deviceId"
+                string query = "SELECT TOP 10 * FROM RegistroAlarma WHERE IdDispositivo = @deviceId ORDER BY FechaHoraGeneracion ASC";
 
-                // Crear el comando SQL
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (conn = ObtenerConexion())
                 {
-                    // Agregar el parámetro del dispositivo ID a la consulta
-                    command.Parameters.AddWithValue("@deviceId", deviceId);
+                    // Abrir la conexión con la base de datos
+                    conn.Open();
 
-                    // Ejecutar la consulta y obtener los resultados
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    // Crear el comando SQL
+                    using (SqlCommand command = new SqlCommand(query, conn))
                     {
-                        while (reader.Read())
-                        {
-                            // Crear un objeto RegistroAlarma y asignar los valores del lector a las propiedades
-                            var registroAlarma = new RegistroAlarma
-                            {
-                                Id = Convert.ToInt32(reader["Id"]),
-                                FechaHoraGeneracion = Convert.ToDateTime(reader["FechaHoraGeneracion"]),
-                                DatoEvaluar = reader["DatoEvaluar"].ToString(),
-                                ValorLimite = Convert.ToSingle(reader["ValorLimite"]),
-                                ValorRecibido = reader["ValorRecibido"].ToString(),
-                                IdPaciente = Guid.Parse(reader["IdPaciente"].ToString()),
-                                IdAlarma = Convert.ToInt32(reader["IdAlarma"])
-                            };
+                        // Agregar el parámetro del dispositivo ID a la consulta
+                        command.Parameters.AddWithValue("@deviceId", deviceId);
 
-                            // Agregar el objeto a la lista
-                            lastAlarmRecords.Add(registroAlarma);
+                        // Ejecutar la consulta y obtener los resultados
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // Crear un objeto RegistroAlarma y asignar los valores del lector a las propiedades
+                                var registroAlarma = new RegistroAlarma
+                                {
+                                    Id = Convert.ToInt32(reader["Id"]),
+                                    FechaHoraGeneracion = Convert.ToDateTime(reader["FechaHoraGeneracion"]),
+                                    DatoEvaluar = reader["DatoEvaluar"].ToString(),
+                                    ValorLimite = Convert.ToSingle(reader["ValorLimite"]),
+                                    ValorRecibido = reader["ValorRecibido"].ToString(),
+                                    IdPaciente = Guid.Parse(reader["IdPaciente"].ToString()),
+                                    IdAlarma = Convert.ToInt32(reader["IdAlarma"])
+                                };
+
+                                // Agregar el objeto a la lista
+                                lastAlarmRecords.Add(registroAlarma);
+                            }
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
 
+                //CERRAR CONEXION
+                conn.Close();
+
+            }
             return View("UltimosRegistrosAlarma", lastAlarmRecords);
         }
 
