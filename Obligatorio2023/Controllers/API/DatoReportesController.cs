@@ -144,9 +144,6 @@ namespace Obligatorio2023.Controllers.API
                 }
             }
 
-
-
-
             stopwatch.Stop();
 
             //registrar la invocacion
