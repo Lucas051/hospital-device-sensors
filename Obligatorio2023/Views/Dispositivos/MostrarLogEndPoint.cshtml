@@ -1,0 +1,31 @@
+﻿@using System.Data
+@model DataTable
+
+<h1>Registros de Logs Endpoint</h1>
+
+@if (Model != null && Model.Rows.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre Endpoint</th>
+                <th>Fecha de Invocación</th>
+                <th>Duración(ms)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.Rows)
+            {
+                <tr>
+                    <td>@row["NombreEndpoint"]</td>
+                    <td>@row["FechaInvocacion"]</td>
+                    <td>@row["Duracion"]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay registros de Logs en Endpoint.</p>
+}

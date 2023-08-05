@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -70,7 +71,7 @@ namespace Obligatorio2023.Controllers
             {
                 return NotFound();
             }
-            //sdf;ljhldslkfjhdsfkljhdsfkljasdhfkjlsadfh
+
             return View(dispositivo);
         }
         //metodo para obtener el ultimo reporte para cada dispositivo
@@ -305,9 +306,7 @@ namespace Obligatorio2023.Controllers
             return View(dispositivos);
         }
 
-        public IActionResult RBD07(){
-            return View();
-        }
+
         public IActionResult RBD08()
         {
             return View();
@@ -316,5 +315,79 @@ namespace Obligatorio2023.Controllers
         {
             return View();
         }
+
+        public static SqlConnection ObtenerConexion()
+        {
+            //connection aparte para usarla varias veces
+            string strcon = @"Data Source=LAPTOP-MRHGENDT\SQLEXPRESS;Initial Catalog = Obligatorio_2023 ;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            SqlConnection conn = new SqlConnection(strcon);
+            return conn;
+        }
+
+        public IActionResult MostrarLogEndPoint()
+        {
+            //mostramos el requerimiento de BD mediante ADO
+            try
+            {
+                DataTable registrosLog = new DataTable();
+                //usamos using para asegurar que cuando se termine el bloque de ejecucion se cierren esos recursos
+                using (SqlConnection connection = ObtenerConexion())
+                {
+                    connection.Open();
+
+
+                    string query = "SELECT * FROM LogEndpoint ORDER BY FechaInvocacion DESC";
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(query, connection))
+                    {
+                        adapter.Fill(registrosLog);
+                    }
+                }
+                return View(registrosLog);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return View();
+
+        }
+
+        public IActionResult MostrarHistoricoDispositivo()
+        {
+            try
+            {
+                var historicoDispositivos = new DataTable();
+
+                using (SqlConnection connection = ObtenerConexion())
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM HistoricoDispositivos";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            adapter.Fill(historicoDispositivos);
+                        }
+                    }
+                }
+
+                return View(historicoDispositivos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+            return View();
+        }
+
+
+
+
+
     }
 }

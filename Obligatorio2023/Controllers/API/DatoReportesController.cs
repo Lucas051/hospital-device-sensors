@@ -12,7 +12,7 @@ using Obligatorio2023.Models;
 
 namespace Obligatorio2023.Controllers.API
 {
-    [Route("api/[controller]")]
+    [Route("api/dispositivos")]
     [ApiController]
     public class DatoReportesController : ControllerBase
     {
@@ -94,7 +94,7 @@ namespace Obligatorio2023.Controllers.API
 
         // POST: api/DatoReportes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("{token}/datos/")]
         public async Task<ActionResult<DatoReporte>> PostDatoReporte(DatoReporte datoReporte)
         {
             // crea e inicia el Stopwatch
@@ -143,9 +143,6 @@ namespace Obligatorio2023.Controllers.API
 
                 }
             }
-
-
-
 
             stopwatch.Stop();
 
