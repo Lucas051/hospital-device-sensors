@@ -5,10 +5,12 @@
 }
 
 @{
+    //asignamos TempData a una variable para que muestre un mensaje de error en caso de que el trigger disp usado se active
     var errorMessage = TempData["ErrorMessage"] as string;
 }
 
 @if (!string.IsNullOrEmpty(errorMessage)){
+    //si la variable no esta vacia mostramos el mensaje
     <div class="alert alert-danger" role="alert">
         @errorMessage
     </div>
