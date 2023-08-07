@@ -51,7 +51,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasIndex("IdPaciente");
 
-                    b.ToTable("Alarma", (string)null);
+                    b.ToTable("Alarma");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.DatoReporte", b =>
@@ -68,7 +68,10 @@ namespace Obligatorio2023.Migrations
                     b.Property<DateTime>("FechaHoraUltRegistro")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("PresionArterial")
+                    b.Property<float>("PresionDistolica")
+                        .HasColumnType("real");
+
+                    b.Property<float>("PresionSistolica")
                         .HasColumnType("real");
 
                     b.Property<int>("Pulso")
@@ -84,7 +87,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasIndex("DispositivoId");
 
-                    b.ToTable("DatoReporte", (string)null);
+                    b.ToTable("DatoReporte");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.Dispositivo", b =>
@@ -125,7 +128,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasIndex("PacienteId");
 
-                    b.ToTable("Dispositivo", (string)null);
+                    b.ToTable("Dispositivo");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.LogEndpoint", b =>
@@ -148,7 +151,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LogEndpoint", (string)null);
+                    b.ToTable("LogEndpoint");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.RegistroAlarma", b =>
@@ -226,7 +229,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UAdministrador", (string)null);
+                    b.ToTable("UAdministrador");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.UMedico", b =>
@@ -269,7 +272,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UMedico", (string)null);
+                    b.ToTable("UMedico");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.UPaciente", b =>
@@ -315,7 +318,7 @@ namespace Obligatorio2023.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UPaciente", (string)null);
+                    b.ToTable("UPaciente");
                 });
 
             modelBuilder.Entity("Obligatorio2023.Models.Alarma", b =>

@@ -17,7 +17,7 @@ namespace Obligatorio2023.Controllers.API
     public class DatoReportesController : ControllerBase
     {
         private readonly ObligatorioContext _context;
-        //hola
+
         public DatoReportesController(ObligatorioContext context)
         {
             _context = context;
@@ -114,13 +114,15 @@ namespace Obligatorio2023.Controllers.API
                 .Where(a => a.IdPaciente == dispositivo.PacienteId)
                 .ToListAsync();
 
+            var registroAlarmas = new List<RegistroAlarma>();
+
             // Verificar si los datos cumplen con alguna alarma y guardar los registros en RegistroAlarma
             foreach (var alarma in alarmas)
             {
                 if (VerificarAlarma(datoReporte, alarma))
                 {
                     // Crear un nuevo registro en RegistroAlarma
-                    var registroAlarma = new RegistroAlarma
+                    registroAlarmas.Add(new RegistroAlarma
                     {
                         FechaHoraGeneracion = DateTime.Now,
                         DatoEvaluar = alarma.DatoEvaluar,
@@ -129,43 +131,51 @@ namespace Obligatorio2023.Controllers.API
                         IdPaciente = alarma.IdPaciente,
                         IdDispositivo = datoReporte.DispositivoId,
                         Alarma = alarma
-                    };
-
-                    _context.RegistroAlarma.Add(registroAlarma);
-                    await _context.SaveChangesAsync();
-
-                    // Retorna un mensaje de alerta
-                    return Ok(new
-                    {
-                        Success = true,
-                        Message = "¡Atencion! Una alarma se ha activado!"
                     });
-
                 }
             }
 
+
+            if (registroAlarmas.Any())
+            {
+                // Guardamos activaciones de alarmas
+                _context.RegistroAlarma.AddRange(registroAlarmas);
+                await _context.SaveChangesAsync();
+            }
+
+            // Logueamos el tiempo que tomó la ejecucion del endpoint
             stopwatch.Stop();
 
-            //registrar la invocacion
             string NombreEndpoint = "PostDatoReporte";
             DateTime FechaInvocacion = DateTime.Now;
             int Duracion = Convert.ToInt32(stopwatch.ElapsedMilliseconds);
             _context.LogInvocacionEndpoint(NombreEndpoint, FechaInvocacion, Duracion);
-            //return CreatedAtAction("PostDatoReporte", new { id = datoReporte.Id }, datoReporte);
             if (_context.DatoReporte == null)
             {
                 return Problem("Entity set 'ObligatorioContext.DatoReporte'  is null.");
             }
             _context.DatoReporte.Add(datoReporte);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetDatoReporte", new { id = datoReporte.Id }, datoReporte);
-        }
 
+
+
+            return Ok(new
+            {
+                Success = true,
+                Message = registroAlarmas.Any()
+                    ? "¡Atencion! Una alarma se ha activado!"
+                    : ""
+            });
+
+        }
+         
         private bool VerificarAlarma(DatoReporte datoReporte, Alarma alarma)
         {
 
 
             // Realizar la comparación con el valor límite de la alarma
+
+
             switch (alarma.DatoEvaluar)
             {
                 case "PresionSistolica":

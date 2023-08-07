@@ -12,8 +12,8 @@ using Obligatorio2023.Data;
 namespace Obligatorio2023.Migrations
 {
     [DbContext(typeof(ObligatorioContext))]
-    [Migration("20230803192515_AlarmaPaciente")]
-    partial class AlarmaPaciente
+    [Migration("20230805193245_ultima")]
+    partial class ultima
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,6 +133,29 @@ namespace Obligatorio2023.Migrations
                     b.ToTable("Dispositivo");
                 });
 
+            modelBuilder.Entity("Obligatorio2023.Models.LogEndpoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Duracion")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaInvocacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NombreEndpoint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogEndpoint");
+                });
+
             modelBuilder.Entity("Obligatorio2023.Models.RegistroAlarma", b =>
                 {
                     b.Property<int>("Id")
@@ -149,6 +172,9 @@ namespace Obligatorio2023.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IdAlarma")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdDispositivo")
                         .HasColumnType("int");
 
                     b.Property<Guid>("IdPaciente")
