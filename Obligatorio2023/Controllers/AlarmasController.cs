@@ -173,6 +173,7 @@ namespace Obligatorio2023.Controllers
             SqlConnection conn = new SqlConnection(strcon);
             return conn;
         }
+
         public IActionResult UltimosRegistrosAlarma(int Id)
         {
             //creamos esta var para asignar una list de registro alarmas
@@ -188,6 +189,7 @@ namespace Obligatorio2023.Controllers
                     string query = "SELECT TOP 10 * FROM RegistroAlarma WHERE IdDispositivo = @deviceId ORDER BY FechaHoraGeneracion ASC";
 
                     // 2 - command
+                    //utilizamos using para asegurar que cuando se termine el bloque los recursos se liberen
                     using (SqlCommand command = new SqlCommand(query, conn))
                     {
                         // Agregar el parámetro de busqueda

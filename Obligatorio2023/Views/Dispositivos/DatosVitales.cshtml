@@ -32,6 +32,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    //Utilizamos una funcion ajax para realizar una solicitud async al controlador de dispositivos, en caso de exito muestra los datos en el div reportesDispositivo
     function cargarReportesDispositivo() {
         $.ajax({
             url: '@Url.Action("ObtenerReportes", "Dispositivos")',
@@ -45,7 +46,8 @@
             }
         });
     }
-
+    //Llamamos la funcion por primera vez para que se ejecute al cargar la vista
+    cargarReportesDispositivo();
     // Ejecutar la función cada 3 segundos
     setInterval(cargarReportesDispositivo, 3000);
 </script>
