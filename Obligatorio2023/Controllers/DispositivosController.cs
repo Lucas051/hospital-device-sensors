@@ -74,18 +74,19 @@ namespace Obligatorio2023.Controllers
 
             return View(dispositivo);
         }
+
         //metodo para obtener el ultimo reporte para cada dispositivo
         public IActionResult ObtenerUltimoDatoReporte(int id)
         {
             var ultimoDatoReporte = _context.DatoReporte
-                .Where(dr => dr.DispositivoId == id)
-                .OrderByDescending(dr => dr.FechaHoraUltRegistro)
-                .FirstOrDefault();
-
+                .Where(dr => dr.DispositivoId == id) //where aplica la condicion de que seleccione solo los registros donde coincidan los ID
+                .OrderByDescending(dr => dr.FechaHoraUltRegistro) //el dato mas reciente aparece primero
+                .FirstOrDefault(); 
+            //devolvemos una vista parcial
             return PartialView("_UltimoDatoReporte", ultimoDatoReporte);
         }
 
-
+        //metodo para mostrar los datos vitales que se reciben del dispositivo seleccionado
         public async Task<IActionResult> DatosVitales(int? id)
         {
             if (id == null || _context.Dispositivo == null)
@@ -145,9 +146,6 @@ namespace Obligatorio2023.Controllers
             _context.Add(dispositivo);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-
-            //ViewData["PacienteId"] = new SelectList(_context.UPaciente, "Id", "Id", dispositivo.PacienteId);
-            //return View(dispositivo);
 
         }
 
@@ -247,9 +245,11 @@ namespace Obligatorio2023.Controllers
             }
             catch (DbUpdateException ex)
             {
+                //en catch usamos exception de base de datos ya que tenemos un trigger que impide eliminar el dispositivo si esta en uso
                 var sqlException = ex.InnerException as SqlException;
                 if (sqlException != null && sqlException.Number == 50000)
                 {
+                    //cargamos en un tempdata el error
                     TempData["ErrorMessage"] = "No se puede eliminar un dispositivo que está en uso.";
                 }
                 else
@@ -275,7 +275,7 @@ namespace Obligatorio2023.Controllers
             return usuarioId;
         }
 
-
+        //reutilizamos el metodo de index para tener otra lista con los requerimientos de BD
         public async Task<IActionResult> ListadoRBD()
         {
             if (!Guid.TryParse(User.Claims.First(x => x.Type.Equals("Id")).Value, out Guid usuarioId)) return BadRequest();
