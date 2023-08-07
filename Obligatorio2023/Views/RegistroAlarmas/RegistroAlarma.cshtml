@@ -1,0 +1,75 @@
+﻿@model List<Obligatorio2023.Models.RegistroAlarma>
+
+<h1>Registros de Alarmas Activadas</h1>
+<p>
+    Alarmas activadas, ordenadas por fecha ascendente que permiten acceder a informacion adicional del dispositivo y paciente que corresponda.
+    Se permite filtrar por médico.
+    Solo acceden a estos datos los administradores o médicos, los médicos solo podrán ver las alarmas de los dispositivos que fueron creados por ellos mismos.
+</p>
+
+<!-- HTML para el selectbox si el usuario es administrador -->
+@*@if (User.IsInRole("Administrador"))
+{
+ 
+    <div>
+        <label for="medicoId">Seleccionar médico:</label>
+        @{
+            var medicosSelectList = ViewData["Medicos"] as SelectList;
+
+        }
+        @Html.DropDownList("medicoId", medicosSelectList, "Todos", new { @class = "form-control" })
+    </div>
+}*@
+<br />
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fecha y Hora de Generación</th>
+                <th>Dato Evaluado</th>
+                <th>Valor Limite</th>
+                <th>Valor Recibido</th>
+                <th>Alarma</th>
+                <th>Dispositivo</th>
+                <th>Paciente</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var registro in Model)
+            {
+                <tr>
+                    <td>@registro.FechaHoraGeneracion</td>
+                    <td>@registro.DatoEvaluar</td>
+                    <td>@registro.ValorLimite</td>
+                    <td>@registro.ValorRecibido</td>
+                    <td>@(registro.Alarma?.Nombre ?? "N/A")</td>
+                    <td>
+                        @if (registro.IdDispositivo > 0)
+                        {
+                            <a href="@Url.Action("Details", "Dispositivos", new { id = registro.IdDispositivo })">Ver Dispositivo</a>
+                        }
+                        else
+                        {
+                            <span>Sin definr</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(registro.IdPaciente.ToString()))
+                        {
+                            <a href="@Url.Action("Details", "UPacientes", new { id = registro.IdPaciente })">Ver Paciente</a>
+                        }
+                        else
+                        {
+                            <span>Sin definr</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay registros de alarma.</p>
+}

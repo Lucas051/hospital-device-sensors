@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Obligatorio2023.Migrations
 {
-    public partial class todoJunto : Migration
+    public partial class ultima : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

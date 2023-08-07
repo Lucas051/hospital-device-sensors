@@ -25,6 +25,7 @@ namespace Obligatorio2023.Models
         [ForeignKey("UPaciente")]
         public Guid PacienteId { get; set; }
 
+        public UMedico? Medico { get; set; }
         [ForeignKey("UMedico")]
         public Guid MedicoId { get; set; }
 

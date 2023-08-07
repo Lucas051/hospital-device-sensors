@@ -166,17 +166,6 @@ namespace Obligatorio2023.Controllers
           return (_context.Alarma?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        //creamos este metodo para traer del contexto los registros de alarmas sin la necesidad de crear
-        //otro controlador de 0, ya que solo necesitamos mostrar las alarmas que "saltaron", no se deben manipular por el usuario
-        public IActionResult RegistroAlarma()
-        {
-            var registros = _context.RegistroAlarma
-                .Include(ra => ra.Paciente)
-                .Include(ra => ra.Alarma)
-                .ToList();
-
-            return View(registros);
-        }
         public static SqlConnection ObtenerConexion()
         {
             //connection aparte para usarla varias veces
