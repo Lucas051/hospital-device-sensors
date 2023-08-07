@@ -23,7 +23,7 @@ namespace Obligatorio2023.Controllers.API
             _context = context;
         }
 
-        // GET: api/DatoReportes
+        // GET: api/DatoReportes ObtenerTodos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DatoReporte>>> GetDatoReporte()
         {
@@ -36,23 +36,30 @@ namespace Obligatorio2023.Controllers.API
 
         // GET: api/DatoReportes/5
         [HttpGet("{id}")]
+        //Task<ActionResult<DatoReporte>> indica que es asincrono, devuelve un resultado tipo DatoReporte
         public async Task<ActionResult<DatoReporte>> GetDatoReporte(int id)
         {
-            // crea e inicia el Stopwatch
+            // Crea e inicia el Stopwatch
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+
+            //_____________________________________
+
             if (_context.DatoReporte == null)
             {
                 return NotFound();
             }
+
             var datoReporte = await _context.DatoReporte.FindAsync(id);
+
             if (datoReporte == null)
             {
                 return NotFound();
             }
+
             stopwatch.Stop();
 
-            //registrar la invocacion
+            //Registrar la invocacion
             string NombreEndpoint = "GetDatoReporte";
             DateTime FechaInvocacion = DateTime.Now;
             int Duracion = Convert.ToInt32(stopwatch.ElapsedMilliseconds);
@@ -62,7 +69,7 @@ namespace Obligatorio2023.Controllers.API
         }
 
         // PUT: api/DatoReportes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDatoReporte(int id, DatoReporte datoReporte)
         {
@@ -93,11 +100,11 @@ namespace Obligatorio2023.Controllers.API
         }
 
         // POST: api/DatoReportes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPost("{token}/datos/")]
         public async Task<ActionResult<DatoReporte>> PostDatoReporte(DatoReporte datoReporte)
         {
-            // crea e inicia el Stopwatch
+            // Crea e inicia el Stopwatch
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
@@ -105,10 +112,12 @@ namespace Obligatorio2023.Controllers.API
             var dispositivo = await _context.Dispositivo
                 .Include(d => d.UPaciente) // Incluir la entidad paciente asociada al dispositivo
                 .FirstOrDefaultAsync(d => d.Id == datoReporte.DispositivoId);
+
             if (dispositivo == null)
             {
-                return NotFound("Device not found.");
+                return NotFound("Dispositivo no encontrado.");
             }
+
             // Obtener todas las alarmas asociadas al paciente del dispositivo
             var alarmas = await _context.Alarma
                 .Where(a => a.IdPaciente == dispositivo.PacienteId)
@@ -146,26 +155,27 @@ namespace Obligatorio2023.Controllers.API
 
             stopwatch.Stop();
 
-            //registrar la invocacion
+            //Registrar la invocacion
             string NombreEndpoint = "PostDatoReporte";
             DateTime FechaInvocacion = DateTime.Now;
             int Duracion = Convert.ToInt32(stopwatch.ElapsedMilliseconds);
             _context.LogInvocacionEndpoint(NombreEndpoint, FechaInvocacion, Duracion);
-            //return CreatedAtAction("PostDatoReporte", new { id = datoReporte.Id }, datoReporte);
+     
             if (_context.DatoReporte == null)
             {
                 return Problem("Entity set 'ObligatorioContext.DatoReporte'  is null.");
             }
+
             _context.DatoReporte.Add(datoReporte);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetDatoReporte", new { id = datoReporte.Id }, datoReporte);
         }
 
+        //Funcion que utilizamos en PostDatoReporte para verificar si se cumple una alarma, devuelve bool para ser utilizado en la sentencia IF
         private bool VerificarAlarma(DatoReporte datoReporte, Alarma alarma)
         {
-
-
-            // Realizar la comparación con el valor límite de la alarma
+            // Usamos un switch para poder contemplar todos los casos que pueden ser causa de alarma, usamos otra funcion
+            //CompararValor(datoReporte, alarma, Comparador) para enviar los datos a comparar en cada caso
             switch (alarma.DatoEvaluar)
             {
                 case "PresionSistolica":
@@ -183,9 +193,10 @@ namespace Obligatorio2023.Controllers.API
                     return false;
             }
         }
-
+        //Aqui nos llegan los parametros a comparar
         private bool CompararValor(float valorReporte, float valorLimite, Comparador comparador)
         {
+            //en el switch utilizamos el parametro de comparador, dependiendo del caso vamos a utilizar los operadores logicos que correspondan
             switch (comparador)
             {
                 case Comparador.Mayor:
