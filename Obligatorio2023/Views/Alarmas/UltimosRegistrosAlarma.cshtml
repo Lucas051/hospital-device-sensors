@@ -1,40 +1,41 @@
 ﻿@model List<Obligatorio2023.Models.RegistroAlarma>
 
 <h1>Últimos 10 Registros de Alarma</h1>
+<p>
+    R-09, RBD-07
+    Seleccionar un dispositivo desde el listado y en una nueva página listar los últimos 10 registros que
+    crearon alarma ordenados de forma ascendente por fecha.
+</p>
 
 @if (Model != null && Model.Any())
 {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Fecha y Hora de Generación</th>
-                    <th>Dato Evaluado</th>
-                    <th>Valor Limite</th>
-                    <th>Valor Recibido</th>
-                    <th>ID Paciente</th>
-                    <th>Alarma</th>
-                </tr>
-            </thead>
-            <tbody>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fecha y Hora de Generación</th>
+                <th>Dato Evaluado</th>
+                <th>Valor Limite</th>
+                <th>Valor Recibido</th>
+                <th>ID Paciente</th>
+                <th>Alarma</th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach (var registro in Model)
             {
-                        <tr>
-                            <td>@registro.FechaHoraGeneracion</td>
-                            <td>@registro.DatoEvaluar</td>
-                            <td>@registro.ValorLimite</td>
-                            <td>@registro.ValorRecibido</td>
-                            <td>@registro.IdPaciente</td>
-                            <td>@registro.IdAlarma</td>
-                        </tr>
+                <tr>
+                    <td>@registro.FechaHoraGeneracion</td>
+                    <td>@registro.DatoEvaluar</td>
+                    <td>@registro.ValorLimite</td>
+                    <td>@registro.ValorRecibido</td>
+                    <td>@registro.IdPaciente</td>
+                    <td>@registro.IdAlarma</td>
+                </tr>
             }
-            </tbody>
-        </table>
-            <p>R-09, RBD-07
-        Seleccionar un dispositivo desde el listado y en una nueva página listar los últimos 10 registros que
-        crearon alarma ordenados de forma ascendente por fecha.
-        </p>
+        </tbody>
+    </table>
 }
 else
 {
-        <p>No hay registros de alarma para este dispositivo.</p>
+    <p>No hay registros de alarma para este dispositivo.</p>
 }

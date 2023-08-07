@@ -17,6 +17,8 @@ namespace Obligatorio2023.Controllers
         }
         public IActionResult RegistroAlarma()
         {
+            //Intento de crear un selectbox para filtrar por medico
+
             // Obtener la lista de médicos para el selectbox
             //if (User.IsInRole("Administrador"))
             //{
@@ -30,6 +32,7 @@ namespace Obligatorio2023.Controllers
                 registros = _context.RegistroAlarma
                 .Include(ra => ra.Paciente)
                 .Include(ra => ra.Alarma)
+                .OrderBy(ra => ra.FechaHoraGeneracion)
                 .ToList();
             }
             else if (User.IsInRole("Medico"))
@@ -41,6 +44,7 @@ namespace Obligatorio2023.Controllers
                     .Where(ra => ra.Dispositivo.MedicoId == usuarioId)
                     .Include(ra => ra.Paciente)
                     .Include(ra => ra.Alarma)
+                    .OrderBy(ra => ra.FechaHoraGeneracion)
                     .ToList();
             }
             else
@@ -49,7 +53,7 @@ namespace Obligatorio2023.Controllers
                 ViewBag.ErrorMessage = "No tienes permiso para ver las alarmas.";
                 return View();
             }
-            return View(registros/*.OrderByDescending(x => x.FechaHoraGeneracion)*/);
+            return View(registros);
         }
     }
 }

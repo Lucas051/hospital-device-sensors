@@ -2,10 +2,17 @@
 @using System.Security.Claims
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Listado de dispositivos";
 }
 
 <h1>Dispositivos</h1>
+<p>
+    En caso de que el usuario sea un administrador, debe poder ver todos los dispositivos.
+    <br />
+    En caso de que el usuario sea un médico, solo listará los dispositivos que él ha creado.
+    <br />
+    Los pacientes tendrán visibles solo los dispositivos que le pertenecen.
+</p>
 
 <table class="table">
     <thead>
@@ -66,9 +73,9 @@
 
                     @if (User.IsInRole("Administrador") || User.IsInRole("Medico"))
                     {
-                    
-                    <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration:none; color: blue">Editar  </a> 
-                    <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration:none; color: red">  Eliminar </a>
+
+                        <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration:none; color: blue">Editar  |</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration:none; color: red">  Eliminar </a>
                     }
                           
                 </td>

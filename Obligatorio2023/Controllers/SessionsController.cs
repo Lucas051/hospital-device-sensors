@@ -28,12 +28,15 @@ namespace Obligatorio2023.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string nomUsu, string contra)
         {
+            //se busca un usuario pac, med o adm que coincida por nomUsu y contra en la base de datos y se guarda el mismo
             UPaciente usuPac = _context.UPaciente.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra);
             UMedico usuMed = _context.UMedico.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra);
             UAdministrador usuAdm = _context.UAdministrador.SingleOrDefault(p => p.NombreUsuario == nomUsu && p.Contraseña == contra);
-
+            
+            // Verificar si el usuario es un paciente.
             if (usuPac != null)
             {
+                // Crear una lista de reclamaciones (claims) para el paciente.
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, nomUsu),
@@ -41,7 +44,9 @@ namespace Obligatorio2023.Controllers
                     new Claim(type: "Id", value: usuPac.Id.ToString()),
 
                 };
+                // Crear una identidad de reclamaciones con la autenticación de cookies.
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                // Iniciar sesión utilizando la identidad creada.
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 return RedirectToAction("Index", "Home");
             }

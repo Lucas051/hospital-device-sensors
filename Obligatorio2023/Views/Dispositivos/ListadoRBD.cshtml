@@ -65,8 +65,8 @@
                     @if (User.IsInRole("Administrador") || User.IsInRole("Medico"))
                     {
 
-                        <a asp-action="UltimosRegistrosAlarma" asp-controller="Alarmas" asp-route-id="@item.Id" style="text-decoration:none; color: blue"> ultimos 10 registros</a>
-                        <a asp-action="RBD08" asp-route-id="@item.Id" style="text-decoration:none; color: red">  promedio </a>
+                        <a asp-action="UltimosRegistrosAlarma" asp-controller="Alarmas" asp-route-id="@item.Id" style="text-decoration:none; color: blue"> Últimos registros |</a>
+                        <a asp-action="RBD08" asp-route-id="@item.Id" style="text-decoration:none; color: red">  Promedio </a>
                     }
 
                 </td>
