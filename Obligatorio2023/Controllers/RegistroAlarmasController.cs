@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Obligatorio2023.Data;
 using Obligatorio2023.Models;
@@ -16,6 +17,12 @@ namespace Obligatorio2023.Controllers
         }
         public IActionResult RegistroAlarma()
         {
+            // Obtener la lista de médicos para el selectbox
+            //if (User.IsInRole("Administrador"))
+            //{
+            //    ViewData["Medicos"] = new SelectList(_context.UMedico.Where(x => true).ToList(), "Id", "Nombre");
+            //}
+
             List<RegistroAlarma> registros;
 
             if (User.IsInRole("Administrador"))
@@ -42,7 +49,7 @@ namespace Obligatorio2023.Controllers
                 ViewBag.ErrorMessage = "No tienes permiso para ver las alarmas.";
                 return View();
             }
-            return View(registros.OrderByDescending(x => x.FechaHoraGeneracion));
+            return View(registros/*.OrderByDescending(x => x.FechaHoraGeneracion)*/);
         }
     }
 }

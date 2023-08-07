@@ -7,6 +7,35 @@
     Solo acceden a estos datos los administradores o médicos, los médicos solo podrán ver las alarmas de los dispositivos que fueron creados por ellos mismos.
 </p>
 
+<!-- HTML para el selectbox si el usuario es administrador -->
+@if (User.IsInRole("Administrador"))
+{
+ 
+@*    <div>
+        <label for="medicoId">Seleccionar médico:</label>
+        @{
+            var medicosSelectList = ViewData["Medicos"] as SelectList;
+
+        }
+        @Html.DropDownList("medicoId", medicosSelectList, "Todos", new { @class = "form-control" })
+    </div>*@
+
+    <form id="medicoForm" action="@Url.Action("RegistroAlarma", "RegistroAlarmas")" method="get">
+        <label for="medicoSeleccionadoId">Seleccionar médico:</label>
+        @{
+            var medicosSelectList = ViewData["Medicos"] as SelectList;
+
+        }
+        @Html.DropDownList("medicoSeleccionadoId", medicosSelectList, "Todos", new { @class = "form-control" })
+    </form>
+
+    <script>
+        document.getElementById("medicoSeleccionadoId").addEventListener("change", function () {
+            document.getElementById("medicoForm").submit();
+        });
+    </script>
+}
+<br />
 @if (Model != null && Model.Any())
 {
     <table class="table">
