@@ -1,0 +1,20 @@
+﻿@model dynamic
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Promedio de Creación de Alarmas</title>
+</head>
+<body>
+    <h1>Promedio de Creación de Alarmas</h1>
+
+    @if (Model.Promedio > 0)
+    {
+        <p>El promedio de creación de alarmas para el dispositivo seleccionado es: @Model.Promedio</p>
+    }
+    else
+    {
+        <p>No se encontraron alarmas para el dispositivo seleccionado hoy.</p>
+    }
+</body>
+</html>
