@@ -32,6 +32,7 @@ namespace Obligatorio2023.Controllers
                 registros = _context.RegistroAlarma
                 .Include(ra => ra.Paciente)
                 .Include(ra => ra.Alarma)
+                //.Where(ra => ra.FechaHoraGeneracion==DateTime.Today)
                 .OrderBy(ra => ra.FechaHoraGeneracion)
                 .ToList();
             }
