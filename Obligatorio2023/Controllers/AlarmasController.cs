@@ -226,5 +226,46 @@ namespace Obligatorio2023.Controllers
 
             return View("UltimosRegistrosAlarma", ultimosRegistros);
         }
+
+        public IActionResult CalcularPromedioAlarma(int Id)
+        {
+            float promedio = 0;
+
+            try
+            {
+                using (SqlConnection conn = ObtenerConexion())
+                {
+                    
+                    conn.Open();
+
+                    string query = "SELECT AVG(CantidadAlarmas) FROM (SELECT COUNT(*) AS CantidadAlarmas FROM RegistroAlarma WHERE IdDispositivo = @Id AND CONVERT(DATE, FechaHoraGeneracion) = CONVERT(DATE, GETDATE()) GROUP BY CONVERT(DATE, FechaHoraGeneracion)) AS T";
+
+                   
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                    
+                        command.Parameters.AddWithValue("@Id", Id);
+                        //Devuelve la primera columna del primer resultado de la consulta
+                        object result = command.ExecuteScalar();
+
+                        if (result != DBNull.Value)
+                        {
+                            //si no es nulo lo convierte a float
+                            promedio = Convert.ToSingle(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+  
+                Console.WriteLine(ex.Message);
+            }
+            //Creamos objeto anonimo con promedio
+            var promedioModel = new { Promedio = promedio };
+            return View("PromedioAlarma", promedioModel);
+        }
+
+
     }
 }
